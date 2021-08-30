@@ -1,5 +1,6 @@
 using BlazorTable;
 using Discord.OAuth2;
+using Lost.DataAccess.Entities;
 using Lost.SharedLib;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -84,6 +85,8 @@ namespace Lost
                 endpoints.MapFallbackToPage("/_Host");
                 endpoints.MapDefaultControllerRoute();
             });
+
+            var test = UtilisateurDal.GetList();
         }
     }
 }
