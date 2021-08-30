@@ -53,6 +53,9 @@ namespace Lost
 
             services.AddTransient<IPersonneService, PersonneService>();
             services.AddSingleton<PersonneService>();
+
+            services.AddTransient<ITransactionService, TransactionService>();
+            services.AddSingleton<TransactionService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
