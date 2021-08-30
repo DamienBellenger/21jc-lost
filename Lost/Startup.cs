@@ -85,8 +85,6 @@ namespace Lost
                 endpoints.MapFallbackToPage("/_Host");
                 endpoints.MapDefaultControllerRoute();
             });
-
-            var test = UtilisateurDal.GetList();
         }
     }
 }
