@@ -1,0 +1,16 @@
+﻿@page "/"
+@inject NotifierTitleService NotifierTitle
+
+<AuthorizeView Context="auth">
+
+    <h1>Hello, world!</h1>
+
+    Welcome to your new app.
+</AuthorizeView>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await NotifierTitle.Update("Page d'accueil");
+    }
+}

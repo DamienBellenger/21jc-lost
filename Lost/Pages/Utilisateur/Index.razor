@@ -1,0 +1,80 @@
+﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(ConstantsUrl.UtilisateurIndex)]
+@inject IUtilisateurService UtilisateurService
+@inject NavigationManager NavManager
+@inject NotifierTitleService NotifierTitle
+
+@if (utilisateurViewModel == null)
+{
+    <div class="spinner"></div>
+}
+else
+{
+
+    <BlazorTable.Table class="table table-light" TableItem="UtilisateurViewModel" Items="utilisateurViewModel" PageSize="15">
+        <BlazorTable.Column TableItem="UtilisateurViewModel" Title="Discord ID" Field="@(x => x.DiscordAuth)" Sortable="true" Filterable="true" Width="20%" />
+        <BlazorTable.Column TableItem="UtilisateurViewModel" Title="Nom" Field="@(x => x.PersonneViewModel.Nom)" Sortable="true" Filterable="true" Width="20%" />
+        <BlazorTable.Column TableItem="UtilisateurViewModel" Title="Prénom" Field="@(x => x.PersonneViewModel.Prenom)" Sortable="true" Filterable="true" Width="20%" />
+        <BlazorTable.Column TableItem="UtilisateurViewModel" Title="Groupe" Field="@(x => x.PersonneViewModel.GroupeViewModel.Nom)" Sortable="true" Filterable="true" Width="20%" />
+        @*<AuthorizeView Policy="@Enemco.Common.Constants.SocieteActionsPermission" Context="action_context">
+            <BlazorTable.Column TableItem="SocieteViewModel" Title="Actions" Width="10%">
+                <Template Context="tableContext">
+                    <AuthorizeView Policy="@Enemco.Common.Constants.SocieteUpdatePermission" Context="update_context">
+                        <MatIconButton Class="matIconButton" Icon="create" @onclick="@(() => RedirectToEdit(tableContext.Id))"></MatIconButton>
+                    </AuthorizeView>
+                    <AuthorizeView Policy="@Enemco.Common.Constants.SocieteDeletePermission" Context="delete_context">
+                        <MatIconButton Class="matIconButton" Icon="delete" @onclick="@(() => RedirectToDelete(tableContext))"></MatIconButton>
+                    </AuthorizeView>
+                </Template>
+            </BlazorTable.Column>
+        </AuthorizeView>*@
+        <BlazorTable.Pager ShowPageNumber="true" ShowTotalCount="true" />
+    </BlazorTable.Table>
+}
+
+@code {
+    private UtilisateurViewModel[] utilisateurViewModel;
+    private UtilisateurViewModel utilisateurViewModelDelete;
+
+    //protected ConfirmBase deleteConfirmation { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await NotifierTitle.Update(Lost.SharedLib.Constants.TitleUtilisateurIndex);
+
+        utilisateurViewModelDelete = new UtilisateurViewModel();
+        utilisateurViewModel = await UtilisateurService.GetAllAsync();
+    }
+
+    protected void RedirectToCreate()
+    {
+        //NavManager.NavigateTo(ConstantsUrl.GroupeCreateOrEdit);
+    }
+
+    protected void RedirectToEdit(long id)
+    {
+        //NavManager.NavigateTo(ConstantsUrl.GroupeCreateOrEdit + "/" + id);
+    }
+
+    protected async Task RedirectToDelete(UtilisateurViewModel viewModel)
+    {
+        /*societeViewModelDelete = viewModel;
+        bool canBeDeleted = await GroupeService.CanBeDeleted(viewModel.Id);
+        if (canBeDeleted)
+        {
+            deleteConfirmation.Show();
+        }
+        else
+        {
+            deleteConfirmation.ShowUnableDelete();
+        }*/
+    }
+
+    protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+    {
+        /*if (deleteConfirmed)
+        {
+            await GroupeService.DeleteAsync(groupeViewModelDelete.Id);
+            groupeViewModel = await GroupeService.GetAllAsync();
+        }*/
+    }
+}

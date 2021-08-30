@@ -1,0 +1,12 @@
+C:\Workspace\Lost\Lost\Lost.Common\bin\Debug\net5.0\Lost.Common.deps.json
+C:\Workspace\Lost\Lost\Lost.Common\bin\Debug\net5.0\Lost.Common.dll
+C:\Workspace\Lost\Lost\Lost.Common\bin\Debug\net5.0\ref\Lost.Common.dll
+C:\Workspace\Lost\Lost\Lost.Common\bin\Debug\net5.0\Lost.Common.pdb
+C:\Workspace\Lost\Lost\Lost.Common\obj\Debug\net5.0\Lost.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workspace\Lost\Lost\Lost.Common\obj\Debug\net5.0\Lost.Common.AssemblyInfoInputs.cache
+C:\Workspace\Lost\Lost\Lost.Common\obj\Debug\net5.0\Lost.Common.AssemblyInfo.cs
+C:\Workspace\Lost\Lost\Lost.Common\obj\Debug\net5.0\Lost.Common.csproj.CoreCompileInputs.cache
+C:\Workspace\Lost\Lost\Lost.Common\obj\Debug\net5.0\Lost.Common.dll
+C:\Workspace\Lost\Lost\Lost.Common\obj\Debug\net5.0\ref\Lost.Common.dll
+C:\Workspace\Lost\Lost\Lost.Common\obj\Debug\net5.0\Lost.Common.pdb
+C:\Workspace\Lost\Lost\Lost.Common\obj\Debug\net5.0\Lost.Common.csproj.AssemblyReference.cache
