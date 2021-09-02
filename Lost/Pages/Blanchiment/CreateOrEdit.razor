@@ -1,5 +1,5 @@
-﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(ConstantsUrl.PersonneCreateOrEdit)]
-@attribute [Microsoft.AspNetCore.Components.RouteAttribute(ConstantsUrl.PersonneCreateOrEdit + "/{Id:long}")]
+﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(ConstantsUrl.TransactionCreateOrEdit)]
+@attribute [Microsoft.AspNetCore.Components.RouteAttribute(ConstantsUrl.TransactionCreateOrEdit + "/{Id:long}")]
 
 @inject IPersonneService PersonneService
 @inject IGroupeService GroupeService
@@ -81,7 +81,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await NotifierTitle.Update(Lost.SharedLib.Constants.TitlePersonneCreateOrEdit);
+        await NotifierTitle.Update(Lost.SharedLib.Constants.TitleTransactionCreateOrEdit);
 
         if (Id > 0)
         {

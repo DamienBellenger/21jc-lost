@@ -1,5 +1,6 @@
 using BlazorTable;
 using Discord.OAuth2;
+using Lost.DataAccess.Entities;
 using Lost.SharedLib;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -53,6 +54,9 @@ namespace Lost
 
             services.AddTransient<IPersonneService, PersonneService>();
             services.AddSingleton<PersonneService>();
+
+            services.AddTransient<ITransactionService, TransactionService>();
+            services.AddSingleton<TransactionService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,9 +1,9 @@
-﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(ConstantsUrl.PersonneIndex)]
-@inject IBlanchimentService BlanchimentService
+﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(ConstantsUrl.TransactionIndex)]
+@inject ITransactionService TransactionService
 @inject NavigationManager NavManager
 @inject NotifierTitleService NotifierTitle
 
-@if (personneViewModel == null)
+@if (transactionViewModel == null)
 {
     <div class="spinner"></div>
 }
@@ -11,17 +11,14 @@ else
 {
     <Confirm @ref="deleteConfirmation"
              ConfirmationChanged="ConfirmDelete_Click"
-             ConfirmationMessage=@($"Êtes-vous sûr de vouloir supprimer le blanchiment de \"{personneViewModelDelete.Nom} {personneViewModelDelete.Prenom} \" ?")
-             UnableMessage=@($"Impossible de supprimer \"{personneViewModelDelete.Nom}\" car il est attribué à une transaction.")>
+             ConfirmationMessage=@($"Êtes-vous sûr de vouloir supprimer le Transaction de \"{transactionViewModelDelete}\" ?")
+             UnableMessage=@($"")>
     </Confirm>
 
     <MatButton Icon="add" Raised="true" Class="mb-3" @onclick="RedirectToCreate">Créer</MatButton>
 
-    <BlazorTable.Table class="table table-light" TableItem="PersonneViewModel" Items="personneViewModel" PageSize="15">
-        <BlazorTable.Column TableItem="PersonneViewModel" Title="Nom" Field="@(x => x.Nom)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="PersonneViewModel" Title="Prénom" Field="@(x => x.Prenom)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="PersonneViewModel" Title="Groupe" Field="@(x => x.GroupeViewModel.Nom)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="PersonneViewModel" Title="Actions" Width="10%">
+    <BlazorTable.Table class="table table-light" TableItem="TransactionViewModel" Items="transactionViewModel" PageSize="15">
+        <BlazorTable.Column TableItem="TransactionViewModel" Title="Actions" Width="10%">
             <Template Context="tableContext">
                 <MatIconButton Class="matIconButton" Icon="create" @onclick="@(() => RedirectToEdit(tableContext.Id))"></MatIconButton>
                 <MatIconButton Class="matIconButton" Icon="delete" @onclick="@(() => RedirectToDelete(tableContext))"></MatIconButton>
@@ -32,33 +29,33 @@ else
 }
 
 @code {
-    private PersonneViewModel[] personneViewModel;
-    private PersonneViewModel personneViewModelDelete;
+    private TransactionViewModel[] transactionViewModel;
+    private TransactionViewModel transactionViewModelDelete;
 
     protected ConfirmBase deleteConfirmation { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        await NotifierTitle.Update(Lost.SharedLib.Constants.TitlePersonneIndex);
+        await NotifierTitle.Update(Lost.SharedLib.Constants.TitleTransactionIndex);
 
-        personneViewModelDelete = new PersonneViewModel();
-        personneViewModel = await PersonneService.GetAllAsync();
+        transactionViewModelDelete = new TransactionViewModel();
+        transactionViewModel = await TransactionService.GetAllAsync();
     }
 
     protected void RedirectToCreate()
     {
-        NavManager.NavigateTo(ConstantsUrl.PersonneCreateOrEdit);
+        NavManager.NavigateTo(ConstantsUrl.TransactionCreateOrEdit);
     }
 
     protected void RedirectToEdit(long id)
     {
-        NavManager.NavigateTo(ConstantsUrl.PersonneCreateOrEdit + "/" + id);
+        NavManager.NavigateTo(ConstantsUrl.TransactionCreateOrEdit + "/" + id);
     }
 
-    protected async Task RedirectToDelete(PersonneViewModel viewModel)
+    protected async Task RedirectToDelete(TransactionViewModel viewModel)
     {
-        personneViewModelDelete = viewModel;
-        bool canBeDeleted = await PersonneService.CanBeDeleted(viewModel.Id);
+        transactionViewModelDelete = viewModel;
+        bool canBeDeleted = await TransactionService.CanBeDeleted(viewModel.Id);
         if (canBeDeleted)
         {
             deleteConfirmation.Show();
@@ -73,8 +70,8 @@ else
     {
         if (deleteConfirmed)
         {
-            await PersonneService.DeleteAsync(personneViewModelDelete.Id);
-            personneViewModel = await PersonneService.GetAllAsync();
+            await TransactionService.DeleteAsync(transactionViewModelDelete.Id);
+            transactionViewModel = await TransactionService.GetAllAsync();
         }
     }
 }
