@@ -38,8 +38,47 @@ namespace Lost.SharedLib
         {
             Transaction transaction = ViewModelToEntity.FillEntity<TransactionViewModel, Transaction>(transactionViewModel);
 
+            if (!transactionViewModel.IsPetiteMain)
+            {
+                GroupeViewModel groupeViewModel = transactionViewModel.GroupeViewModel;
+                TauxBlanchiment lastTauxBlanchiment = await TauxBlanchimentDal.GetLastTauxBlanchimentGroupeAsync(groupeViewModel.Id);
+                if (lastTauxBlanchiment.ValeurBillet != groupeViewModel.TauxBlanchimentViewModel.ValeurBillet ||
+                   lastTauxBlanchiment.ValeurSac != groupeViewModel.TauxBlanchimentViewModel.ValeurSac ||
+                   lastTauxBlanchiment.ValeurVoiture != groupeViewModel.TauxBlanchimentViewModel.ValeurVoiture)
+                {
+                    lastTauxBlanchiment = new TauxBlanchiment();
+                    lastTauxBlanchiment.ValeurBillet = groupeViewModel.TauxBlanchimentViewModel.ValeurBillet;
+                    lastTauxBlanchiment.ValeurSac = groupeViewModel.TauxBlanchimentViewModel.ValeurSac;
+                    lastTauxBlanchiment.ValeurVoiture = groupeViewModel.TauxBlanchimentViewModel.ValeurVoiture;
+                    lastTauxBlanchiment.GroupeId = groupeViewModel.Id;
+                    lastTauxBlanchiment.DateDebut = System.DateTime.Now;
+                    await TauxBlanchimentDal.AddAsync(lastTauxBlanchiment);
+                }
+                transaction.TauxBlanchimentId = lastTauxBlanchiment.Id;
+            }
+            else
+            {
+                PersonneViewModel personneViewModel = transactionViewModel.PersonneViewModel;
+                TauxBlanchiment lastTauxBlanchiment = await TauxBlanchimentDal.GetLastTauxBlanchimentPersonneAsync(personneViewModel.Id);
+                if (lastTauxBlanchiment.ValeurBillet != personneViewModel.TauxBlanchimentViewModel.ValeurBillet ||
+                   lastTauxBlanchiment.ValeurSac != personneViewModel.TauxBlanchimentViewModel.ValeurSac ||
+                   lastTauxBlanchiment.ValeurVoiture != personneViewModel.TauxBlanchimentViewModel.ValeurVoiture)
+                {
+                    lastTauxBlanchiment = new TauxBlanchiment();
+                    lastTauxBlanchiment.ValeurBillet = personneViewModel.TauxBlanchimentViewModel.ValeurBillet;
+                    lastTauxBlanchiment.ValeurSac = personneViewModel.TauxBlanchimentViewModel.ValeurSac;
+                    lastTauxBlanchiment.ValeurVoiture = personneViewModel.TauxBlanchimentViewModel.ValeurVoiture;
+                    lastTauxBlanchiment.PersonneId = personneViewModel.Id;
+                    lastTauxBlanchiment.DateDebut = System.DateTime.Now;
+                    await TauxBlanchimentDal.AddAsync(lastTauxBlanchiment);
+                }
+                transaction.TauxBlanchimentId = lastTauxBlanchiment.Id;
+            }
+
             if (transactionViewModel.Id == 0)
             {
+                Semaine semaine = await SemaineDal.GetLastAsync();
+                transaction.SemaineId = semaine.Id;
                 await TransactionDal.AddAsync(transaction);
             }
             else

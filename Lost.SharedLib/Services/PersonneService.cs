@@ -25,6 +25,27 @@ namespace Lost.SharedLib
             return await Task.FromResult(result);
         }
 
+        public async Task<PersonneViewModel[]> GetAllWithTauxAsync()
+        {
+            IList<Personne> personneList = await PersonneDal.GetListWithTauxAsync();
+            PersonneViewModel[] result = new PersonneViewModel[personneList.Count];
+
+            int i = 0;
+            foreach (var personne in personneList.OrderBy(e => e.Id))
+            {
+                PersonneViewModel personneViewModel = EntityToViewModel.FillViewModel<Personne, PersonneViewModel>(personne);
+
+                if(personne.TauxBlanchiment != null)
+                {
+                    personneViewModel.TauxBlanchimentViewModel = EntityToViewModel.FillViewModel<TauxBlanchiment, TauxBlanchimentViewModel>(personne.TauxBlanchiment);
+                }
+
+                result[i] = personneViewModel;
+                i++;
+            }
+            return await Task.FromResult(result);
+        }
+
         public async Task<PersonneViewModel> GetAsync(long id)
         {
             Personne personne = await PersonneDal.GetAsync(id);

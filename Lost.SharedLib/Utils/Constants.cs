@@ -8,6 +8,7 @@
         public const string ErrorRequiredValeurSac = "La valeur d'un sac est requise";
         public const string ErrorRequiredValeurVoiture = "La valeur d'une voiture est requise";
         public const string ErrorRequiredValeurBillet = "La valeur d'un billet est requise";
+        public const string ErrorRequiredDate = "La date est requise";
 
         public const string TitleGroupeIndex = "Liste des groupes";
         public const string TitleGroupeCreateOrEdit = "Edition d'un groupe";

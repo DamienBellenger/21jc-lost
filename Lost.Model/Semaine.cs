@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lost.Model
 {
@@ -9,5 +10,8 @@ namespace Lost.Model
 
         [Column("numero")]
         public int Num { get; set; }
+
+        [Column("date_debut")]
+        public DateTime DateDebut { get; set; }
     }
 }

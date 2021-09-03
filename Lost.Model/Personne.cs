@@ -23,6 +23,8 @@ namespace Lost.Model
         [Column("id_groupe")]
         public long? GroupeId { get; set; }
 
+        [NotMapped]
+        public TauxBlanchiment TauxBlanchiment { get; set; }
 
         public override string ToString()
         {

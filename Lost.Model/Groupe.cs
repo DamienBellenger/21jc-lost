@@ -11,6 +11,7 @@ namespace Lost.Model
         [Column("groupe_cartel")]
         public bool IsGroupeCartel { get; set; }
 
-        public List<TauxBlanchiment> TauxBlanchiment { get; set; }
+        [NotMapped]
+        public TauxBlanchiment TauxBlanchiment { get; set; }
     }
 }

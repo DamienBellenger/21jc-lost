@@ -17,6 +17,19 @@ namespace Lost.DataAccess.Entities
             }
         }
 
+        public static async Task<List<Groupe>> GetListWithTauxAsync()
+        {
+            using (LostDbContext dbContext = CommonDal.CreateDbContext())
+            {
+                List<Groupe> groupes = await dbContext.Groupe.AsNoTracking().ToListAsync();
+                foreach (Groupe groupe in groupes)
+                {
+                    groupe.TauxBlanchiment = await TauxBlanchimentDal.GetLastTauxBlanchimentGroupeAsync(groupe.Id);
+                }
+                return groupes;
+            }
+        }
+
         public static async Task<bool> CanBeDeleted(long idGroupe)
         {
             using (LostDbContext dbContext = CommonDal.CreateDbContext())
