@@ -15,7 +15,15 @@ namespace Lost.DataAccess.Entities
                 return await dbContext.Utilisateur.AsNoTracking().Include(u => u.Personne.Groupe).ToListAsync();
             }
         }
-        
+
+        public static async Task<Utilisateur> GetWithPersonneAsync(long id)
+        {
+            using (LostDbContext dbContext = CommonDal.CreateDbContext())
+            {
+                return await dbContext.Utilisateur.AsNoTracking().Include(u => u.Personne).FirstOrDefaultAsync(i => i.Id == id);
+            }
+        }
+
         public static async Task<Utilisateur> GetUtilisateurByDiscordId(string discordId)
         {
             using (LostDbContext dbContext = CommonDal.CreateDbContext())

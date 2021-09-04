@@ -13,5 +13,8 @@ namespace Lost.Model
         [ForeignKey(nameof(Personne))]
         [Column("id_personne")]
         public long? PersonneId { get; set; }
+
+        [Column("role")]
+        public string Role { get; set; }
     }
 }

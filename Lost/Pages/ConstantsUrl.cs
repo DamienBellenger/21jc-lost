@@ -12,6 +12,7 @@
         public const string GroupeCreateOrEdit = "/groupe/createOrEdit";
 
         public const string UtilisateurIndex = "/utilisateur/index";
+        public const string UtilisateurCreateOrEdit = "/utilisateur/createOrEdit";
 
     }
 }

@@ -8,5 +8,24 @@ namespace Lost.SharedLib
         public string DiscordAuth { get; set; }
 
         public PersonneViewModel PersonneViewModel { get; set; }
+
+        [Required(ErrorMessage = Constants.ErrorRequiredRole)]
+        public string Role { get; set; }
+
+        public string NomPrenom
+        {
+            get
+            {
+                return PersonneViewModel.Nom + " " + PersonneViewModel.Prenom;
+            }
+            set
+            {
+            }
+        }
+
+        public UtilisateurViewModel()
+        {
+            PersonneViewModel = new PersonneViewModel();
+        }
     }
 }

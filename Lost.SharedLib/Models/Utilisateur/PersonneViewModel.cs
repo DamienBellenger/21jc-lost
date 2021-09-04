@@ -23,5 +23,10 @@ namespace Lost.SharedLib
             GroupeViewModel = new GroupeViewModel();
             TauxBlanchimentViewModel = new TauxBlanchimentViewModel();
         }
+
+        public override string ToString()
+        {
+            return Nom + " " + Prenom;
+        }
     }
 }

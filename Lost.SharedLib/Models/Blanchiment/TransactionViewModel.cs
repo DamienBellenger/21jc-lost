@@ -22,6 +22,76 @@ namespace Lost.SharedLib
 
         public SemaineViewModel SemaineViewModel { get; set; }
 
+        public double ArgentSale
+        {
+            get
+            {
+                double billet = NbBillet;
+                double sac = NbSac * 150;
+                double voiture = NbSac * 1200;
+                return billet + sac + voiture;
+            }
+            set
+            {
+
+            }
+        }
+
+        public double Paye
+        {
+            get
+            {
+                if (PersonneViewModel != null)
+                {
+                    return PersonneTotal;
+                }
+                else if (GroupeViewModel != null)
+                {
+                    return GroupeTotal;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            set
+            {
+
+            }
+        }
+
+        public double Benefice
+        {
+            get
+            {
+                return ArgentSale - Paye;
+            }
+            set
+            {
+
+            }
+        }
+
+        public string From
+        {
+            get
+            {
+                if(PersonneViewModel != null)
+                {
+                    return PersonneViewModel.Nom + " " + PersonneViewModel.Prenom;
+                }
+                else if (GroupeViewModel != null)
+                {
+                    return GroupeViewModel.Nom;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+            set { }
+        }
+
         public double GroupePayerBillet
         {
             get

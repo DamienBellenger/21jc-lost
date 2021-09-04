@@ -3,78 +3,75 @@
 @inject NavigationManager NavManager
 @inject NotifierTitleService NotifierTitle
 
-@if (utilisateurViewModel == null)
-{
-    <div class="spinner"></div>
-}
-else
-{
+    <AuthorizeView Roles="Administrateur" Context="isUserAdmin">
+        <Authorized>
 
-    <BlazorTable.Table class="table table-light" TableItem="UtilisateurViewModel" Items="utilisateurViewModel" PageSize="15">
-        <BlazorTable.Column TableItem="UtilisateurViewModel" Title="Discord ID" Field="@(x => x.DiscordAuth)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="UtilisateurViewModel" Title="Nom" Field="@(x => x.PersonneViewModel.Nom)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="UtilisateurViewModel" Title="Prénom" Field="@(x => x.PersonneViewModel.Prenom)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="UtilisateurViewModel" Title="Groupe" Field="@(x => x.PersonneViewModel.GroupeViewModel.Nom)" Sortable="true" Filterable="true" Width="20%" />
-        @*<AuthorizeView Policy="@Enemco.Common.Constants.SocieteActionsPermission" Context="action_context">
-            <BlazorTable.Column TableItem="SocieteViewModel" Title="Actions" Width="10%">
-                <Template Context="tableContext">
-                    <AuthorizeView Policy="@Enemco.Common.Constants.SocieteUpdatePermission" Context="update_context">
-                        <MatIconButton Class="matIconButton" Icon="create" @onclick="@(() => RedirectToEdit(tableContext.Id))"></MatIconButton>
-                    </AuthorizeView>
-                    <AuthorizeView Policy="@Enemco.Common.Constants.SocieteDeletePermission" Context="delete_context">
-                        <MatIconButton Class="matIconButton" Icon="delete" @onclick="@(() => RedirectToDelete(tableContext))"></MatIconButton>
-                    </AuthorizeView>
-                </Template>
-            </BlazorTable.Column>
-        </AuthorizeView>*@
-        <BlazorTable.Pager ShowPageNumber="true" ShowTotalCount="true" />
-    </BlazorTable.Table>
-}
+            @if (utilisateurViewModel == null)
+            {
+                <div class="spinner"></div>
+            }
+            else
+            {
+                <Confirm @ref="deleteConfirmation"
+                         ConfirmationChanged="ConfirmDelete_Click"
+                         ConfirmationMessage=@($"Êtes-vous sûr de vouloir supprimer \"{utilisateurViewModelDelete?.PersonneViewModel.Nom} {utilisateurViewModelDelete?.PersonneViewModel.Prenom} \" ?")
+                         UnableMessage=@($"")>
+                </Confirm>
 
-@code {
-    private UtilisateurViewModel[] utilisateurViewModel;
-    private UtilisateurViewModel utilisateurViewModelDelete;
+                <MatButton Icon="add" Raised="true" Class="mb-3 float-right" @onclick="RedirectToCreate">Ajouter</MatButton>
 
-    //protected ConfirmBase deleteConfirmation { get; set; }
+                <BlazorTable.Table class="table table-light" TableItem="UtilisateurViewModel" Items="utilisateurViewModel" PageSize="15">
+                    <BlazorTable.Column TableItem="UtilisateurViewModel" Title="Discord ID" Field="@(x => x.DiscordAuth)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="UtilisateurViewModel" Title="Nom" Field="@(x => x.NomPrenom)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="UtilisateurViewModel" Title="Rôle" Field="@(x => x.Role)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="UtilisateurViewModel" Title="Actions" Width="10%">
+                        <Template Context="tableContext">
+                            <MatIconButton Class="matIconButton" Icon="create" @onclick="@(() => RedirectToEdit(tableContext.Id))"></MatIconButton>
+                            <MatIconButton Class="matIconButton" Icon="delete" @onclick="@(() => RedirectToDelete(tableContext))"></MatIconButton>
+                        </Template>
+                    </BlazorTable.Column>
+                    <BlazorTable.Pager ShowPageNumber="true" ShowTotalCount="true" />
+                </BlazorTable.Table>
+            }
 
-    protected override async Task OnInitializedAsync()
-    {
-        await NotifierTitle.Update(Lost.SharedLib.Constants.TitleUtilisateurIndex);
+            @code {
+                private UtilisateurViewModel[] utilisateurViewModel;
+                private UtilisateurViewModel utilisateurViewModelDelete;
 
-        utilisateurViewModelDelete = new UtilisateurViewModel();
-        utilisateurViewModel = await UtilisateurService.GetAllAsync();
-    }
+                protected ConfirmBase deleteConfirmation { get; set; }
 
-    protected void RedirectToCreate()
-    {
-        //NavManager.NavigateTo(ConstantsUrl.GroupeCreateOrEdit);
-    }
+                protected override async Task OnInitializedAsync()
+                {
+                    await NotifierTitle.Update(Lost.SharedLib.Constants.TitleUtilisateurIndex);
 
-    protected void RedirectToEdit(long id)
-    {
-        //NavManager.NavigateTo(ConstantsUrl.GroupeCreateOrEdit + "/" + id);
-    }
+                    utilisateurViewModelDelete = new UtilisateurViewModel();
+                    utilisateurViewModel = await UtilisateurService.GetAllAsync();
+                }
 
-    protected async Task RedirectToDelete(UtilisateurViewModel viewModel)
-    {
-        /*societeViewModelDelete = viewModel;
-        bool canBeDeleted = await GroupeService.CanBeDeleted(viewModel.Id);
-        if (canBeDeleted)
-        {
-            deleteConfirmation.Show();
-        }
-        else
-        {
-            deleteConfirmation.ShowUnableDelete();
-        }*/
-    }
+                protected void RedirectToCreate()
+                {
+                    NavManager.NavigateTo(ConstantsUrl.UtilisateurCreateOrEdit);
+                }
 
-    protected async Task ConfirmDelete_Click(bool deleteConfirmed)
-    {
-        /*if (deleteConfirmed)
-        {
-            await GroupeService.DeleteAsync(groupeViewModelDelete.Id);
-            groupeViewModel = await GroupeService.GetAllAsync();
-        }*/
-    }
-}
+                protected void RedirectToEdit(long id)
+                {
+                    NavManager.NavigateTo(ConstantsUrl.UtilisateurCreateOrEdit + "/" + id);
+                }
+
+                protected void RedirectToDelete(UtilisateurViewModel viewModel)
+                {
+                    utilisateurViewModelDelete = viewModel;
+                    deleteConfirmation.Show();
+                }
+
+                protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+                {
+                    if (deleteConfirmed)
+                    {
+                        await UtilisateurService.DeleteAsync(utilisateurViewModelDelete.Id);
+                        utilisateurViewModel = await UtilisateurService.GetAllAsync();
+                    }
+                }
+            }
+        </Authorized>
+    </AuthorizeView>

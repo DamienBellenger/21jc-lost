@@ -11,13 +11,27 @@ namespace Lost.SharedLib
     {
         public async Task<TransactionViewModel[]> GetAllAsync()
         {
-            IList<Transaction> transactionList = await TransactionDal.GetListAsync();
+            IList<Transaction> transactionList = await TransactionDal.GetListWithDetailsAsync();
             TransactionViewModel[] result = new TransactionViewModel[transactionList.Count];
 
             int i = 0;
             foreach (var transaction in transactionList.OrderBy(e => e.Id))
             {
                 TransactionViewModel transactionViewModel = EntityToViewModel.FillViewModel<Transaction, TransactionViewModel>(transaction);
+                if (transaction.TauxBlanchiment.Personne != null)
+                {
+                    transactionViewModel.PersonneViewModel = EntityToViewModel.FillViewModel<Personne, PersonneViewModel>(transaction.TauxBlanchiment.Personne);
+                    transactionViewModel.PersonneViewModel.TauxBlanchimentViewModel = EntityToViewModel.FillViewModel<TauxBlanchiment, TauxBlanchimentViewModel>(transaction.TauxBlanchiment);
+                }
+                if (transaction.TauxBlanchiment.Groupe != null)
+                {
+                    transactionViewModel.GroupeViewModel = EntityToViewModel.FillViewModel<Groupe, GroupeViewModel>(transaction.TauxBlanchiment.Groupe);
+                    transactionViewModel.GroupeViewModel.TauxBlanchimentViewModel = EntityToViewModel.FillViewModel<TauxBlanchiment, TauxBlanchimentViewModel>(transaction.TauxBlanchiment);
+                }
+                if (transaction.Semaine != null)
+                {
+                    transactionViewModel.SemaineViewModel = EntityToViewModel.FillViewModel<Semaine, SemaineViewModel>(transaction.Semaine);
+                }
 
                 result[i] = transactionViewModel;
                 i++;
@@ -27,9 +41,20 @@ namespace Lost.SharedLib
 
         public async Task<TransactionViewModel> GetAsync(long id)
         {
-            Transaction transaction = await TransactionDal.GetAsync(id);
+            Transaction transaction = await TransactionDal.GetWithDetailsAsync(id);
 
             TransactionViewModel transactionViewModel = EntityToViewModel.FillViewModel<Transaction, TransactionViewModel>(transaction);
+            TauxBlanchimentViewModel tauxBlanchimentViewModel = EntityToViewModel.FillViewModel<TauxBlanchiment, TauxBlanchimentViewModel>(transaction.TauxBlanchiment);
+            if (transaction.TauxBlanchiment.Groupe != null)
+            {
+                transactionViewModel.GroupeViewModel = EntityToViewModel.FillViewModel<Groupe, GroupeViewModel>(transaction.TauxBlanchiment.Groupe);
+                transactionViewModel.GroupeViewModel.TauxBlanchimentViewModel = tauxBlanchimentViewModel;
+            }
+            if (transaction.TauxBlanchiment.Personne != null)
+            {
+                transactionViewModel.PersonneViewModel = EntityToViewModel.FillViewModel<Personne, PersonneViewModel>(transaction.TauxBlanchiment.Personne);
+                transactionViewModel.PersonneViewModel.TauxBlanchimentViewModel = tauxBlanchimentViewModel;
+            }
 
             return transactionViewModel;
         }
@@ -60,9 +85,10 @@ namespace Lost.SharedLib
             {
                 PersonneViewModel personneViewModel = transactionViewModel.PersonneViewModel;
                 TauxBlanchiment lastTauxBlanchiment = await TauxBlanchimentDal.GetLastTauxBlanchimentPersonneAsync(personneViewModel.Id);
-                if (lastTauxBlanchiment.ValeurBillet != personneViewModel.TauxBlanchimentViewModel.ValeurBillet ||
+                if (lastTauxBlanchiment == null ||
+                    (lastTauxBlanchiment.ValeurBillet != personneViewModel.TauxBlanchimentViewModel.ValeurBillet ||
                    lastTauxBlanchiment.ValeurSac != personneViewModel.TauxBlanchimentViewModel.ValeurSac ||
-                   lastTauxBlanchiment.ValeurVoiture != personneViewModel.TauxBlanchimentViewModel.ValeurVoiture)
+                   lastTauxBlanchiment.ValeurVoiture != personneViewModel.TauxBlanchimentViewModel.ValeurVoiture))
                 {
                     lastTauxBlanchiment = new TauxBlanchiment();
                     lastTauxBlanchiment.ValeurBillet = personneViewModel.TauxBlanchimentViewModel.ValeurBillet;

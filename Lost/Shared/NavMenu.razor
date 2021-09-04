@@ -9,24 +9,28 @@
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="blanchiment/index">
-                <span class="oi oi-home" aria-hidden="true"></span> Blanchiment
+                <span class="oi oi-dollar" aria-hidden="true"></span> Blanchiment
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="personne/index">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Annuaire
+                <span class="oi oi-paperclip" aria-hidden="true"></span> Annuaire
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="groupe/index">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Groupes
+                <span class="oi oi-people" aria-hidden="true"></span> Groupes
             </NavLink>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="utilisateur/index">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Utilisateurs
-            </NavLink>
-        </li>
+        <AuthorizeView Roles="Administrateur" Context="isUserAdmin">
+            <Authorized>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="utilisateur/index">
+                        <span class="oi oi-person" aria-hidden="true"></span> Utilisateurs
+                    </NavLink>
+                </li>
+            </Authorized>
+        </AuthorizeView>
     </ul>
 </div>
 

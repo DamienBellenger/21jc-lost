@@ -109,7 +109,7 @@
                     }
                 </div>
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-                    @if (transactionViewModel.GroupeViewModel != null)
+                    @if (transactionViewModel.GroupeViewModel != null && !transactionViewModel.IsPetiteMain)
                     {
                         <p>
                             <MatTextField Label="Valeur billet" @bind-Value="@transactionViewModel.GroupePayerBillet" FullWidth="true" />
@@ -124,6 +124,21 @@
                             <MatTextField Label="Total" @bind-Value="@transactionViewModel.GroupeTotal" FullWidth="true" />
                         </p>
                     }
+                    else @if (transactionViewModel.PersonneViewModel != null && transactionViewModel.IsPetiteMain)
+                   {
+                    <p>
+                        <MatTextField Label="Valeur billet" @bind-Value="@transactionViewModel.PersonnePayerBillet" FullWidth="true" />
+                    </p>
+                    <p>
+                        <MatTextField Label="Valeur sac" @bind-Value="@transactionViewModel.PersonnePayerSac" FullWidth="true" />
+                    </p>
+                    <p>
+                        <MatTextField Label="Valeur voiture" @bind-Value="@transactionViewModel.PersonnePayerVoiture" FullWidth="true" />
+                    </p>
+                    <p>
+                        <MatTextField Label="Total" @bind-Value="@transactionViewModel.PersonneTotal" FullWidth="true" />
+                    </p>
+                }
                 </div>
             </div>
         </div>

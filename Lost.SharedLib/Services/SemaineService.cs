@@ -9,6 +9,22 @@ namespace Lost.SharedLib
 {
     public class SemaineService : ISemaineService
     {
+        public async Task<SemaineViewModel[]> GetAllAsync()
+        {
+            IList<Semaine> semaineList = await SemaineDal.GetListAsync();
+            SemaineViewModel[] result = new SemaineViewModel[semaineList.Count];
+
+            int i = 0;
+            foreach (var semaine in semaineList.OrderBy(e => e.Id))
+            {
+                SemaineViewModel semaineViewModel = EntityToViewModel.FillViewModel<Semaine, SemaineViewModel>(semaine);
+
+                result[i] = semaineViewModel;
+                i++;
+            }
+            return await Task.FromResult(result);
+        }
+
         public async Task<SemaineViewModel> GetLastAsync()
         {
             Semaine semaine = await SemaineDal.GetLastAsync();

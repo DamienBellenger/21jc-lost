@@ -1,5 +1,6 @@
 ﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(ConstantsUrl.TransactionIndex)]
 @inject ITransactionService TransactionService
+@inject ISemaineService SemaineService
 @inject NavigationManager NavManager
 @inject NotifierTitleService NotifierTitle
 
@@ -15,13 +16,27 @@ else
              UnableMessage=@($"")>
     </Confirm>
 
-    <MatButton Icon="add" Raised="true" Class="mb-3" @onclick="RedirectToCreate">Créer</MatButton>
+    <RadzenDropDown Data="semaineViewModelList"
+                    @bind-Value=@semaineViewModelSelected
+                    AllowClear="true"
+                    AllowFiltering="true"
+                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                    TextProperty="DisplayReferenceDesignation"
+                    Change="SemaineChange">
+    </RadzenDropDown>
+
+    <MatButton Icon="add" Raised="true" Class="mb-3 float-right" @onclick="RedirectToCreate">Blanchiment</MatButton>
+    <MatButton Icon="add" Raised="true" Class="mb-3 mr-3 float-right" @onclick="RedirectToCreate">Achat/Vente</MatButton>
 
     <BlazorTable.Table class="table table-light" TableItem="TransactionViewModel" Items="transactionViewModel" PageSize="15">
+        <BlazorTable.Column TableItem="TransactionViewModel" Title="Date" Field="@(x => x.Date)" Sortable="true" Filterable="true" Width="20%" />
+        <BlazorTable.Column TableItem="TransactionViewModel" Title="De" Field="@(x => x.From)" Sortable="true" Filterable="true" Width="20%" />
+        <BlazorTable.Column TableItem="TransactionViewModel" Title="Argent sale" Field="@(x => x.ArgentSale)" Sortable="true" Filterable="true" Width="20%" />
+        <BlazorTable.Column TableItem="TransactionViewModel" Title="Payé" Field="@(x => x.Paye)" Sortable="true" Filterable="true" Width="20%" />
+        <BlazorTable.Column TableItem="TransactionViewModel" Title="Bénéfice" Field="@(x => x.Benefice)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="TransactionViewModel" Title="Actions" Width="10%">
             <Template Context="tableContext">
-                <MatIconButton Class="matIconButton" Icon="create" @onclick="@(() => RedirectToEdit(tableContext.Id))"></MatIconButton>
-                <MatIconButton Class="matIconButton" Icon="delete" @onclick="@(() => RedirectToDelete(tableContext))"></MatIconButton>
+                <MatIconButton Class="matIconButton p-0" Style="width: 24px;height: 24px;" Icon="create" @onclick="@(() => RedirectToEdit(tableContext.Id))"></MatIconButton>
             </Template>
         </BlazorTable.Column>
         <BlazorTable.Pager ShowPageNumber="true" ShowTotalCount="true" />
@@ -32,6 +47,12 @@ else
     private TransactionViewModel[] transactionViewModel;
     private TransactionViewModel transactionViewModelDelete;
 
+    private SemaineViewModel[] semaineViewModelList;
+    private SemaineViewModel semaineViewModelSelected;
+
+    private TransactionViewModel[] allTransactionViewModel;
+
+
     protected ConfirmBase deleteConfirmation { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -39,7 +60,9 @@ else
         await NotifierTitle.Update(Lost.SharedLib.Constants.TitleTransactionIndex);
 
         transactionViewModelDelete = new TransactionViewModel();
-        transactionViewModel = await TransactionService.GetAllAsync();
+        allTransactionViewModel = await TransactionService.GetAllAsync();
+        transactionViewModel = allTransactionViewModel;
+        semaineViewModelList = await SemaineService.GetAllAsync();
     }
 
     protected void RedirectToCreate()
@@ -72,6 +95,18 @@ else
         {
             await TransactionService.DeleteAsync(transactionViewModelDelete.Id);
             transactionViewModel = await TransactionService.GetAllAsync();
+        }
+    }
+
+    private async Task SemaineChange()
+    {
+        if(semaineViewModelSelected == null)
+        {
+            transactionViewModel = allTransactionViewModel;
+        }
+        else
+        {
+            transactionViewModel = allTransactionViewModel.Where(t => t.SemaineViewModel.Id == semaineViewModelSelected.Id).ToArray();
         }
     }
 }

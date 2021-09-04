@@ -42,15 +42,15 @@ namespace Discord.OAuth2
 
             var discriminator = identity.Claims.ToList().FirstOrDefault(c => c.Type.Contains("discriminator"));
             string discordId = identity.Name + "#" + discriminator.Value;
-            //Utilisateur utilisateur = await UtilisateurDal.GetUtilisateurByDiscordId(discordId);
-            //if (utilisateur != null)
-            //{
-            //    Claim iden = identity.Claims.ToList().FirstOrDefault(c => c.Value == identity.Name);
-            //    identity.RemoveClaim(iden);
-            //    Claim newClaim = new Claim(iden.Type, utilisateur.Personne.ToString(), iden.ValueType, iden.Issuer, iden.OriginalIssuer, iden.Subject);
-            //    identity.AddClaim(newClaim);
-            identity.AddClaim(new Claim(ClaimTypes.Role, "Utilisateur"));
-            //}
+            Utilisateur utilisateur = await UtilisateurDal.GetUtilisateurByDiscordId(discordId);
+            if (utilisateur != null)
+            {
+                Claim iden = identity.Claims.ToList().FirstOrDefault(c => c.Value == identity.Name);
+                identity.RemoveClaim(iden);
+                Claim newClaim = new Claim(iden.Type, utilisateur.Personne.ToString(), iden.ValueType, iden.Issuer, iden.OriginalIssuer, iden.Subject);
+                identity.AddClaim(newClaim);
+                identity.AddClaim(new Claim(ClaimTypes.Role, utilisateur.Role));
+            }
 
             await Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);

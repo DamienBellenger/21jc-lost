@@ -15,5 +15,10 @@ namespace Lost.SharedLib
         {
 
         }
+
+        public override string ToString()
+        {
+            return Libelle;
+        }
     }
 }
