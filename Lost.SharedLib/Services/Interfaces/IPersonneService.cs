@@ -6,6 +6,8 @@ namespace Lost.SharedLib
     {
         public Task<PersonneViewModel[]> GetAllAsync();
 
+        public Task<PersonneViewModel[]> GetAllWithTauxAsync();
+
         public Task<PersonneViewModel> GetAsync(long id);
 
         public Task AddOrUpdateAsync(PersonneViewModel personneViewModel);

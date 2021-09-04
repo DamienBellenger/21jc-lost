@@ -31,11 +31,11 @@ namespace Lost.Model
         [Column("id_payepar")]
         public long? PayeParId { get; set; }
 
-        [ForeignKey(nameof(GroupeId))]
-        public Groupe Groupe { get; set; }
+        [ForeignKey(nameof(TauxBlanchimentId))]
+        public TauxBlanchiment TauxBlanchiment { get; set; }
 
-        [ForeignKey(nameof(Groupe))]
-        [Column("id_groupe")]
-        public long? GroupeId { get; set; }
+        [ForeignKey(nameof(TauxBlanchiment))]
+        [Column("id_taux_blanchiment")]
+        public long? TauxBlanchimentId { get; set; }
     }
 }

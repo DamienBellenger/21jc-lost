@@ -6,6 +6,8 @@ namespace Lost.SharedLib
     {
         public Task<GroupeViewModel[]> GetAllAsync();
 
+        public Task<GroupeViewModel[]> GetAllWithTauxAsync();
+
         public Task<GroupeViewModel> GetAsync(long id);
 
         public Task AddOrUpdateAsync(GroupeViewModel groupeViewModel);
