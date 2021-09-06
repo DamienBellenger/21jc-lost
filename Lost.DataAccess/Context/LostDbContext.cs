@@ -18,6 +18,10 @@ namespace Lost.DataAccess.Context
             Database.EnsureCreated();
         }
 
+        public DbSet<AchatVente> AchatVente { get; set; }
+        public DbSet<Billet> Billet { get; set; }
+        public DbSet<Sac> Sac { get; set; }
+        public DbSet<Voiture> Voiture { get; set; }
         public DbSet<Groupe> Groupe { get; set; }
         public DbSet<Personne> Personne { get; set; }
         public DbSet<Semaine> Semaine { get; set; }

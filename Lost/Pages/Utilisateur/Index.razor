@@ -26,8 +26,8 @@
                     <BlazorTable.Column TableItem="UtilisateurViewModel" Title="Rôle" Field="@(x => x.Role)" Sortable="true" Filterable="true" Width="20%" />
                     <BlazorTable.Column TableItem="UtilisateurViewModel" Title="Actions" Width="10%">
                         <Template Context="tableContext">
-                            <MatIconButton Class="matIconButton" Icon="create" @onclick="@(() => RedirectToEdit(tableContext.Id))"></MatIconButton>
-                            <MatIconButton Class="matIconButton" Icon="delete" @onclick="@(() => RedirectToDelete(tableContext))"></MatIconButton>
+                            <MatIconButton Class="matIconButton p-0" Style="width: 24px;height: 24px;" Icon="create" @onclick="@(() => RedirectToEdit(tableContext.Id))"></MatIconButton>
+                            <MatIconButton Class="matIconButton p-0" Style="width: 24px;height: 24px;" Icon="delete" @onclick="@(() => RedirectToDelete(tableContext))"></MatIconButton>
                         </Template>
                     </BlazorTable.Column>
                     <BlazorTable.Pager ShowPageNumber="true" ShowTotalCount="true" />

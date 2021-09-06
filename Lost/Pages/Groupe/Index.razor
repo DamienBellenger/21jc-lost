@@ -15,15 +15,15 @@ else
              UnableMessage=@($"Impossible de supprimer \"{groupeViewModelDelete.Nom}\" car il est attribué à une personne.")>
     </Confirm>
 
-    <MatButton Icon="add" Raised="true" Class="mb-3" @onclick="RedirectToCreate">Créer</MatButton>
+    <MatButton Icon="add" Raised="true" Class="mb-3 float-right" @onclick="RedirectToCreate">Créer</MatButton>
 
     <BlazorTable.Table class="table table-light" TableItem="GroupeViewModel" Items="groupeViewModel" PageSize="15">
         <BlazorTable.Column TableItem="GroupeViewModel" Title="Nom" Field="@(x => x.Nom)" Sortable="true" Filterable="true" Width="60%" />
         <BlazorTable.Column TableItem="GroupeViewModel" Title="Groupe Cartel" Field="@(x => x.IsGroupeCartel)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="GroupeViewModel" Title="Actions" Width="20%">
             <Template Context="tableContext">
-                <MatIconButton Class="matIconButton" Icon="create" @onclick="@(() => RedirectToEdit(tableContext.Id))"></MatIconButton>
-                <MatIconButton Class="matIconButton" Icon="delete" @onclick="@(() => RedirectToDelete(tableContext))"></MatIconButton>
+                <MatIconButton Class="matIconButton p-0" Style="width: 24px;height: 24px;" Icon="create" @onclick="@(() => RedirectToEdit(tableContext.Id))"></MatIconButton>
+                <MatIconButton Class="matIconButton p-0" Style="width: 24px;height: 24px;" Icon="delete" @onclick="@(() => RedirectToDelete(tableContext))"></MatIconButton>
             </Template>
         </BlazorTable.Column>
         <BlazorTable.Pager ShowPageNumber="true" ShowTotalCount="true" />

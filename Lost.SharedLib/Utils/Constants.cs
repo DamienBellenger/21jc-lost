@@ -10,6 +10,7 @@
         public const string ErrorRequiredValeurVoiture = "La valeur d'une voiture est requise";
         public const string ErrorRequiredValeurBillet = "La valeur d'un billet est requise";
         public const string ErrorRequiredDate = "La date est requise";
+        public const string ErrorRequiredGroupePersonne = "Un groupe ou une personne est requis";
 
         public const string TitleGroupeIndex = "Liste des groupes";
         public const string TitleGroupeCreateOrEdit = "Edition d'un groupe";
@@ -18,6 +19,8 @@
         public const string TitleUtilisateurCreateOrEdit = "Edition d'un utilisateur";
         public const string TitlePersonneIndex = "Annuaire";
         public const string TitleTransactionIndex = "Blanchiment";
+        public const string TitleAchatVenteIndex = "Achat / Vente";
+        public const string TitleAchatVenteCreateOrEdit = "Edition d'un  Achat / Vente";
         public const string TitleTransactionCreateOrEdit = "Edition d'un blanchiment";
     }
 }

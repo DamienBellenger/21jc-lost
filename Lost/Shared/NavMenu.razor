@@ -8,8 +8,28 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="blanchiment/index">
-                <span class="oi oi-dollar" aria-hidden="true"></span> Blanchiment
+            <NavLink class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
+                <span class="material-icons">local_laundry_service</span><span style="margin-left: 8px;">Blanchiment</span>
+</NavLink>
+            @if (expandSubNav)
+            {
+        <div style="margin-left: 20px;">
+            <NavLink class="nav-link" href="billet/index">
+                <span class="fontawe far fa-money-bill-alt" aria-hidden="true"></span> <span style="margin-left: 15px;">Billets</span>
+            </NavLink>
+            <NavLink class="nav-link" href="sac/index">
+                <span class="material-icons">monetization_on</span> <span style="margin-left: 12px;">Sacs</span>
+            </NavLink>
+            <NavLink class="nav-link" href="voiture/index">
+                <span class="fontawe fas fa-car" aria-hidden="true"></span> <span style="margin-left: 15px;">Voitures</span>
+            </NavLink>
+        </div>
+            }
+        </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="achatvente/index">
+                <span class="fontawe fas fa-exchange-alt" aria-hidden="true"></span> <span style="margin-left: 15px;">Achat/Vente</span>
             </NavLink>
         </li>
         <li class="nav-item px-3">
@@ -36,6 +56,7 @@
 
 @code {
     private bool collapseNavMenu = true;
+    private bool expandSubNav;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 

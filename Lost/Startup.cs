@@ -57,8 +57,17 @@ namespace Lost
             services.AddTransient<IPersonneService, PersonneService>();
             services.AddSingleton<PersonneService>();
 
-            services.AddTransient<ITransactionService, TransactionService>();
-            services.AddSingleton<TransactionService>();
+            services.AddTransient<IAchatVenteService, AchatVenteService>();
+            services.AddSingleton<AchatVenteService>();
+            
+            services.AddTransient<IBilletService, BilletService>();
+            services.AddSingleton<BilletService>();
+
+            services.AddTransient<ISacService, SacService>();
+            services.AddSingleton<SacService>();
+
+            services.AddTransient<IVoitureService, VoitureService>();
+            services.AddSingleton<VoitureService>();
 
             services.AddTransient<ISemaineService, SemaineService>();
             services.AddSingleton<SemaineService>();

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lost.SharedLib
 {
-    public class TransactionService : ITransactionService
+    /*public class TransactionService : ITransactionService
     {
         public async Task<TransactionViewModel[]> GetAllAsync()
         {
@@ -122,5 +122,5 @@ namespace Lost.SharedLib
         {
             return await TransactionDal.CanBeDeleted(id);
         }
-    }
+    }*/
 }

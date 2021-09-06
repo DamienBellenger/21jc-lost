@@ -18,6 +18,16 @@
     top: -2px;
 }
 
+.fontawe {
+    font-size: 1.1rem;
+    vertical-align: text-top;
+    top: -2px;
+}
+
+    .fontawe #text {
+        width: 2rem;
+    }
+
 .nav-item {
     font-size: 0.9rem;
     padding-bottom: 0.5rem;

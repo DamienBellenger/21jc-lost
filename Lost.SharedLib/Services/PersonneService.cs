@@ -66,10 +66,13 @@ namespace Lost.SharedLib
         {
             Personne personne = ViewModelToEntity.FillEntity<PersonneViewModel, Personne>(personneViewModel);
 
-            if (!personne.IsPetiteMain)
+            if (!personne.IsPetiteMain && personneViewModel.GroupeViewModel?.Id != 0)
             {
                 personne.GroupeId = personneViewModel.GroupeViewModel?.Id;
             }
+
+            personne.Groupe = null;
+            personne.TauxBlanchiment = null;
 
             if (personneViewModel.Id == 0)
             {

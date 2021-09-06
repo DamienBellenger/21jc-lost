@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace Lost.DataAccess.Entities
 {
-    public class TransactionDal : LostContextDal<Transaction>
+    public class TransactionDal<T> : LostContextDal<T> where T : Transaction
     {
-        public static async Task<List<Transaction>> GetListWithDetailsAsync()
+        public static async Task<List<T>> GetListWithDetailsAsync()
         {
             using (LostDbContext dbContext = CommonDal.CreateDbContext())
             {
-                return await dbContext.Transaction
+                DbSet<T> dbSet = dbContext.Set<T>();
+
+                return await dbSet
                     .Include(t => t.Semaine)
                     .Include(t => t.TauxBlanchiment.Groupe)
                     .Include(t => t.TauxBlanchiment.Personne)
@@ -20,11 +22,13 @@ namespace Lost.DataAccess.Entities
             }
         }
 
-        public static async Task<Transaction> GetWithDetailsAsync(long id)
+        public static async Task<T> GetWithDetailsAsync(long id)
         {
             using (LostDbContext dbContext = CommonDal.CreateDbContext())
             {
-                return await dbContext.Transaction
+                DbSet<T> dbSet = dbContext.Set<T>();
+
+                return await dbSet
                     .Include(t => t.TauxBlanchiment.Groupe)
                     .Include(t => t.TauxBlanchiment.Personne)
                     .AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);

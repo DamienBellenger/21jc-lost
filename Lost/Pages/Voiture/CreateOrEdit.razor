@@ -1,0 +1,138 @@
+﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(ConstantsUrl.VoitureCreateOrEdit)]
+@attribute [Microsoft.AspNetCore.Components.RouteAttribute(ConstantsUrl.VoitureCreateOrEdit + "/{Id:long}")]
+
+@inject IVoitureService VoitureService
+@inject IPersonneService PersonneService
+@inject IGroupeService GroupeService
+@inject NavigationManager NavManager
+@inject IJSRuntime jsRuntime
+@inject NotifierTitleService NotifierTitle
+
+<div class="box-create">
+    <EditForm Model="@voitureViewModel" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <div class="mat-layout-grid">
+            <div class="mat-layout-grid-inner">
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+
+                    <p>
+                        <RadzenLabel Text="Date du blanchiment" Style="width:100%" />
+                        <RadzenDatePicker DateFormat="" TValue="DateTime" Style="width:100%"
+                                          @bind-Value=@voitureViewModel.Date
+                                          Placeholder="Date du blanchiment" />
+                        <ValidationMessage For="@(() => voitureViewModel.Date)" />
+                    </p>
+                    <p>
+                        <MatTextField Label="Nombre de voiture" @bind-Value="@voitureViewModel.Nb" FullWidth="true" />
+                        <ValidationMessage For="@(() => voitureViewModel.Nb)" />
+                    </p>
+
+                    <p>
+                        <MatBlazor.MatCheckbox Label="Est une petite main" @bind-Value="@voitureViewModel.IsPetiteMain" Style="display: table-cell; vertical-align: middle;" FullWidth="true" />
+                    </p>
+
+                    @if (voitureViewModel.IsPetiteMain)
+                    {
+                        <p>
+                            <div class="title-dropdown">Petite main</div>
+                            <RadzenDropDown Data="personneViewModelList"
+                                            @bind-Value=@voitureViewModel.PersonneViewModel
+                                            AllowClear="true"
+                                            AllowFiltering="true"
+                                            Style="width:100%"
+                                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                            TextProperty="DisplayReferenceDesignation">
+                            </RadzenDropDown>
+                        </p>
+
+                        @if (voitureViewModel.PersonneViewModel != null)
+                        {
+                            <p>
+                                <MatTextField Label="Valeur voiture (en $)" @bind-Value="@voitureViewModel.PersonneViewModel.TauxBlanchimentViewModel.ValeurVoiture" FullWidth="true" />
+                                <ValidationMessage For="@(() => voitureViewModel.PersonneViewModel.GroupeViewModel.TauxBlanchimentViewModel.ValeurVoiture)" />
+                            </p>
+                        }
+
+                    }
+                    else
+                    {
+                        <p>
+                            <div class="title-dropdown">Groupe</div>
+                            <RadzenDropDown Data="groupeViewModelList"
+                                            @bind-Value=@voitureViewModel.GroupeViewModel
+                                            AllowClear="true"
+                                            AllowFiltering="true"
+                                            Style="width:100%"
+                                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                            TextProperty="DisplayReferenceDesignation">
+                            </RadzenDropDown>
+                        </p>
+
+                        @if (voitureViewModel.GroupeViewModel != null)
+                        {
+                            <p>
+                                <MatTextField Label="Valeur voiture (en $)" @bind-Value="@voitureViewModel.GroupeViewModel.TauxBlanchimentViewModel.ValeurVoiture" FullWidth="true" />
+                                <ValidationMessage For="@(() => voitureViewModel.GroupeViewModel.TauxBlanchimentViewModel.ValeurVoiture)" />
+                            </p>
+                        }
+
+                    }
+
+                    @if (voitureViewModel.GroupeViewModel != null && !voitureViewModel.IsPetiteMain)
+                    {
+                        <p>
+                            <MatTextField Label="A payer" @bind-Value="@voitureViewModel.GroupePayerVoiture" FullWidth="true" />
+                        </p>
+                    }
+                    else @if (voitureViewModel.PersonneViewModel != null && voitureViewModel.IsPetiteMain)
+                    {
+                        <p>
+                            <MatTextField Label="A payer" @bind-Value="@voitureViewModel.PersonnePayerVoiture" FullWidth="true" />
+                        </p>
+                    }
+
+                    <MatButton Class="save" Type="submit" Raised="true" Icon="done">Valider</MatButton>
+                    <MatButton Class="cancel" Type="button" Outlined="true" OnClick="@Cancel" Icon="clear">Annuler</MatButton>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public long Id { get; set; }
+
+
+    private VoitureViewModel voitureViewModel = new VoitureViewModel();
+
+    private List<GroupeViewModel> groupeViewModelList = new List<GroupeViewModel>();
+    private List<PersonneViewModel> personneViewModelList = new List<PersonneViewModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await NotifierTitle.Update(Lost.SharedLib.Constants.TitleTransactionCreateOrEdit);
+
+        if (Id > 0)
+        {
+            voitureViewModel = await VoitureService.GetAsync(Id);
+        }
+
+        groupeViewModelList = (await GroupeService.GetAllWithTauxAsync()).ToList();
+        personneViewModelList = (await PersonneService.GetAllWithTauxAsync()).ToList();
+    }
+
+
+    private void HandleValidSubmit()
+    {
+        Task.Run(async () => await VoitureService.AddOrUpdateAsync(voitureViewModel)).Wait();
+
+        NavManager.NavigateTo(ConstantsUrl.VoitureIndex);
+
+    }
+
+    public void Cancel()
+    {
+        NavManager.NavigateTo(ConstantsUrl.VoitureIndex);
+    }
+}

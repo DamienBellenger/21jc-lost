@@ -5,6 +5,18 @@
         public const string TransactionIndex = "/blanchiment/index";
         public const string TransactionCreateOrEdit = "/blanchiment/createOrEdit";
 
+        public const string AchatVenteIndex = "/achatvente/index";
+        public const string AchatVenteCreateOrEdit = "/achatvente/createOrEdit";
+
+        public const string BilletIndex = "/billet/index";
+        public const string BilletCreateOrEdit = "/billet/createOrEdit";
+
+        public const string SacIndex = "/sac/index";
+        public const string SacCreateOrEdit = "/sac/createOrEdit";
+
+        public const string VoitureIndex = "/voiture/index";
+        public const string VoitureCreateOrEdit = "/voiture/createOrEdit";
+
         public const string PersonneIndex = "/personne/index";
         public const string PersonneCreateOrEdit = "/personne/createOrEdit";
 
