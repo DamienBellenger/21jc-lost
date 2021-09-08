@@ -109,6 +109,8 @@ namespace Lost.SharedLib
             }
             else
             {
+                Sac oldSac = await TransactionDal<Sac>.GetAsync(sac.Id);
+                sac.SemaineId = oldSac.SemaineId;
                 await TransactionDal<Sac>.UpdateAsync(sac);
             }
         }

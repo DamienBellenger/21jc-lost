@@ -12,7 +12,7 @@ else
 {
     <Confirm @ref="deleteConfirmation"
              ConfirmationChanged="ConfirmDelete_Click"
-             ConfirmationMessage=@($"Êtes-vous sûr de vouloir supprimer le blanchiment de \"{voitureViewModelDelete}\" ?")
+             ConfirmationMessage=@($"Êtes-vous sûr de vouloir supprimer ce blanchiment ?")
              UnableMessage=@($"")>
     </Confirm>
 
@@ -62,7 +62,7 @@ else
 
         voitureViewModelDelete = new VoitureViewModel();
         allVoitureViewModel = await VoitureService.GetAllAsync();
-        allVoitureViewModel = allVoitureViewModel.OrderByDescending(v => v.SemaineViewModel.Num).ToArray();
+        allVoitureViewModel = allVoitureViewModel.OrderByDescending(v => v.Date).ToArray();
         voitureViewModel = allVoitureViewModel;
         semaineViewModelList = await SemaineService.GetAllAsync();
         semaineViewModelSelected = semaineViewModelList.Last();

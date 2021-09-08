@@ -12,7 +12,7 @@ else
 {
     <Confirm @ref="deleteConfirmation"
              ConfirmationChanged="ConfirmDelete_Click"
-             ConfirmationMessage=@($"Êtes-vous sûr de vouloir supprimer la transaction de \"{achatVenteViewModelDelete}\" ?")
+             ConfirmationMessage=@($"Êtes-vous sûr de vouloir supprimer cette transaction ?")
              UnableMessage=@($"")>
     </Confirm>
 
@@ -61,7 +61,7 @@ else
 
         achatVenteViewModelDelete = new AchatVenteViewModel();
         allAchatVenteViewModel = await AchatVenteService.GetAllAsync();
-        allAchatVenteViewModel = allAchatVenteViewModel.OrderByDescending(v => v.SemaineViewModel.Num).ToArray();
+        allAchatVenteViewModel = allAchatVenteViewModel.OrderByDescending(v => v.Date).ToArray();
         achatVenteViewModel = allAchatVenteViewModel;
         semaineViewModelList = await SemaineService.GetAllAsync();
         semaineViewModelSelected = semaineViewModelList.Last();

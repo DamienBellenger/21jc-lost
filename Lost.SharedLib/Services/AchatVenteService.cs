@@ -109,6 +109,8 @@ namespace Lost.SharedLib
             }
             else
             {
+                AchatVente oldAchatVente = await TransactionDal<AchatVente>.GetAsync(achatVente.Id);
+                achatVente.SemaineId = oldAchatVente.SemaineId;
                 await TransactionDal<AchatVente>.UpdateAsync(achatVente);
             }
         }

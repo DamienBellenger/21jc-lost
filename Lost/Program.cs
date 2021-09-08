@@ -14,7 +14,8 @@ namespace Lost
     {
         public static void Main(string[] args)
         {
-            System.Globalization.CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
+            CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
+            CultureInfo.CurrentUICulture = new CultureInfo("fr-FR");
             CreateHostBuilder(args).Build().Run();
         }
 

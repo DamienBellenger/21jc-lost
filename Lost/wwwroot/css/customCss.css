@@ -83,3 +83,8 @@
 .table td {
     vertical-align: middle;
 }
+
+table {
+    opacity: 0.95;
+    border: 3px solid #434B53;
+}

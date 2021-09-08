@@ -109,6 +109,8 @@ namespace Lost.SharedLib
             }
             else
             {
+                Billet oldBillet = await TransactionDal<Billet>.GetAsync(billet.Id);
+                billet.SemaineId = oldBillet.SemaineId;
                 await TransactionDal<Billet>.UpdateAsync(billet);
             }
         }

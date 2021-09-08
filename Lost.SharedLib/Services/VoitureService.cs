@@ -109,6 +109,8 @@ namespace Lost.SharedLib
             }
             else
             {
+                Voiture oldVoiture = await TransactionDal<Voiture>.GetAsync(voiture.Id);
+                voiture.SemaineId = oldVoiture.SemaineId;
                 await TransactionDal<Voiture>.UpdateAsync(voiture);
             }
         }
