@@ -17,7 +17,7 @@ else
 
     <MatButton Icon="add" Raised="true" Class="mb-3 float-right" @onclick="RedirectToCreate">Créer</MatButton>
 
-    <BlazorTable.Table class="table table-light" TableItem="PersonneViewModel" Items="personneViewModel" PageSize="15">
+    <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="PersonneViewModel" Items="personneViewModel" PageSize="15">
         <BlazorTable.Column TableItem="PersonneViewModel" Title="Nom" Field="@(x => x.Nom)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="PersonneViewModel" Title="Prénom" Field="@(x => x.Prenom)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="PersonneViewModel" Title="Groupe" Field="@(x => x.GroupeViewModel.Nom)" Sortable="true" Filterable="true" Width="20%" />

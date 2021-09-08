@@ -28,7 +28,7 @@ else
 
     <MatButton Icon="add" Raised="true" Class="mb-3 float-right" @onclick="RedirectToCreate">Blanchiment</MatButton>
 
-    <BlazorTable.Table class="table table-light" TableItem="VoitureViewModel" Items="voitureViewModel" PageSize="15">
+    <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="VoitureViewModel" Items="voitureViewModel" PageSize="15">
         <BlazorTable.Column TableItem="VoitureViewModel" Title="Date" Field="@(x => x.Date)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="VoitureViewModel" Title="De" Field="@(x => x.From)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="VoitureViewModel" Title="Argent sale" Field="@(x => x.ArgentSale)" Sortable="true" Filterable="true" Width="20%" />
