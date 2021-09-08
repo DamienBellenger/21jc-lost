@@ -16,6 +16,15 @@ namespace Lost.DataAccess.Entities
             }
         }
 
+        public static async Task<List<Personne>> GetListWithGroupeAsync()
+        {
+            using (LostDbContext dbContext = CommonDal.CreateDbContext())
+            {
+                List<Personne> personnes = await dbContext.Personne.Include(p => p.Groupe).AsNoTracking().ToListAsync();
+                return personnes;
+            }
+        }
+
         public static async Task<List<Personne>> GetListWithTauxAsync()
         {
             using (LostDbContext dbContext = CommonDal.CreateDbContext())

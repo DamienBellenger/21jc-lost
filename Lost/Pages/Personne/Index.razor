@@ -20,6 +20,7 @@ else
     <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="PersonneViewModel" Items="personneViewModel" PageSize="15">
         <BlazorTable.Column TableItem="PersonneViewModel" Title="Nom" Field="@(x => x.Nom)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="PersonneViewModel" Title="Prénom" Field="@(x => x.Prenom)" Sortable="true" Filterable="true" Width="20%" />
+        <BlazorTable.Column TableItem="PersonneViewModel" Title="Tel" Field="@(x => x.Tel)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="PersonneViewModel" Title="Groupe" Field="@(x => x.GroupeViewModel.Nom)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="PersonneViewModel" Title="Actions" Width="10%">
             <Template Context="tableContext">

@@ -11,13 +11,18 @@ namespace Lost.SharedLib
     {
         public async Task<PersonneViewModel[]> GetAllAsync()
         {
-            IList<Personne> personneList = await PersonneDal.GetListAsync();
+            IList<Personne> personneList = await PersonneDal.GetListWithGroupeAsync();
             PersonneViewModel[] result = new PersonneViewModel[personneList.Count];
 
             int i = 0;
             foreach (var personne in personneList.OrderBy(e => e.Id))
             {
                 PersonneViewModel personneViewModel = EntityToViewModel.FillViewModel<Personne, PersonneViewModel>(personne);
+
+                if (personne.Groupe != null)
+                {
+                    personneViewModel.GroupeViewModel = EntityToViewModel.FillViewModel<Groupe, GroupeViewModel>(personne.Groupe);
+                }
 
                 result[i] = personneViewModel;
                 i++;
