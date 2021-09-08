@@ -71,6 +71,9 @@ namespace Lost
 
             services.AddTransient<ISemaineService, SemaineService>();
             services.AddSingleton<SemaineService>();
+
+            services.AddTransient<IStatistiqueService, StatistiqueService>();
+            services.AddSingleton<StatistiqueService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

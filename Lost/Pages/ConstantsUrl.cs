@@ -2,6 +2,8 @@
 {
     public static class ConstantsUrl
     {
+        public const string StatistiqueIndex = "/stats";
+
         public const string TransactionIndex = "/blanchiment/index";
         public const string TransactionCreateOrEdit = "/blanchiment/createOrEdit";
 

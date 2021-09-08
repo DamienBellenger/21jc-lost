@@ -19,6 +19,7 @@
         public const string TitleUtilisateurCreateOrEdit = "Edition d'un utilisateur";
         public const string TitlePersonneIndex = "Annuaire";
         public const string TitleTransactionIndex = "Blanchiment";
+        public const string TitleStatistiqueIndex = "Statistiques";
         public const string TitleAchatVenteIndex = "Achat / Vente";
         public const string TitleAchatVenteCreateOrEdit = "Edition d'un  Achat / Vente";
         public const string TitleTransactionCreateOrEdit = "Edition d'un blanchiment";

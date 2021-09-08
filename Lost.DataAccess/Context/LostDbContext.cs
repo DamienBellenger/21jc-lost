@@ -28,6 +28,7 @@ namespace Lost.DataAccess.Context
         public DbSet<TauxBlanchiment> TauxBlanchiment { get; set; }
         public DbSet<Transaction> Transaction { get; set; }
         public DbSet<Utilisateur> Utilisateur { get; set; }
+        public IQueryable<Statistique> Statistique { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
