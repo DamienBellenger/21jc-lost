@@ -61,8 +61,12 @@ else
 
         achatVenteViewModelDelete = new AchatVenteViewModel();
         allAchatVenteViewModel = await AchatVenteService.GetAllAsync();
+        allAchatVenteViewModel = allAchatVenteViewModel.OrderByDescending(v => v.SemaineViewModel.Num).ToArray();
         achatVenteViewModel = allAchatVenteViewModel;
         semaineViewModelList = await SemaineService.GetAllAsync();
+        semaineViewModelSelected = semaineViewModelList.Last();
+        semaineViewModelList = semaineViewModelList.OrderByDescending(s => s.Num).ToArray();
+        SemaineChange();
     }
 
     protected void RedirectToCreate()
@@ -98,7 +102,7 @@ else
         }
     }
 
-    private async Task SemaineChange()
+    private void SemaineChange()
     {
         if(semaineViewModelSelected == null)
         {

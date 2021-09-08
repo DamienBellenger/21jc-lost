@@ -62,8 +62,12 @@ else
 
         billetViewModelDelete = new BilletViewModel();
         allBilletViewModel = await BilletService.GetAllAsync();
+        allBilletViewModel = allBilletViewModel.OrderByDescending(v => v.SemaineViewModel.Num).ToArray();
         billetViewModel = allBilletViewModel;
         semaineViewModelList = await SemaineService.GetAllAsync();
+        semaineViewModelSelected = semaineViewModelList.Last();
+        semaineViewModelList = semaineViewModelList.OrderByDescending(s => s.Num).ToArray();
+        SemaineChange();
     }
 
     protected void RedirectToCreate()
@@ -99,7 +103,7 @@ else
         }
     }
 
-    private async Task SemaineChange()
+    private void SemaineChange()
     {
         if(semaineViewModelSelected == null)
         {

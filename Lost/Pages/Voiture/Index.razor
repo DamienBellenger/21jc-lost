@@ -62,8 +62,12 @@ else
 
         voitureViewModelDelete = new VoitureViewModel();
         allVoitureViewModel = await VoitureService.GetAllAsync();
+        allVoitureViewModel = allVoitureViewModel.OrderByDescending(v => v.SemaineViewModel.Num).ToArray();
         voitureViewModel = allVoitureViewModel;
         semaineViewModelList = await SemaineService.GetAllAsync();
+        semaineViewModelSelected = semaineViewModelList.Last();
+        semaineViewModelList = semaineViewModelList.OrderByDescending(s => s.Num).ToArray();
+        SemaineChange();
     }
 
     protected void RedirectToCreate()
@@ -99,7 +103,7 @@ else
         }
     }
 
-    private async Task SemaineChange()
+    private void SemaineChange()
     {
         if(semaineViewModelSelected == null)
         {
