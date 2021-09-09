@@ -28,11 +28,24 @@ namespace Lost.DataAccess.Context
         public DbSet<TauxBlanchiment> TauxBlanchiment { get; set; }
         public DbSet<Transaction> Transaction { get; set; }
         public DbSet<Utilisateur> Utilisateur { get; set; }
-        public IQueryable<Statistique> Statistique { get; set; }
+        public DbSet<StatistiqueGroupe> StatistiqueGroupe { get; set; }
+        public DbSet<StatistiquePersonne> StatistiquePersonne { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<StatistiqueGroupe>(v =>
+            {
+                v.HasNoKey();
+                v.ToView(Lost.Model.StatistiqueGroupe.viewName);
+            });
+
+            modelBuilder.Entity<StatistiquePersonne>(v =>
+            {
+                v.HasNoKey();
+                v.ToView(Lost.Model.StatistiquePersonne.viewName);
+            });
         }
     }
 }

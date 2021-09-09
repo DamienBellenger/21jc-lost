@@ -4,6 +4,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>C:\Users\dbell\Documents\21jc\21jc-lost\Lost\bin\Release\net5.0\publish\</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\Workspace\Git\21jc-lost\Lost\bin\Release\net5.0\publish\</_PublishTargetUrl>
+    <History>True|2021-09-09T08:32:40.7698486Z;</History>
   </PropertyGroup>
 </Project>

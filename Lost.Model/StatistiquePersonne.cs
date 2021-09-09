@@ -2,9 +2,10 @@
 
 namespace Lost.Model
 {
-    [Table("groupebilletsacvoituresemaine")]
-    public class Statistique
+    public class StatistiquePersonne
     {
+        public const string viewName = "personnebilletsacvoituresemaine";
+
         [Column("nom")]
         public string Nom { get; set; }
 

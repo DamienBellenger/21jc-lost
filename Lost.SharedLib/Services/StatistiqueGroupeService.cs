@@ -5,17 +5,17 @@ using System.Threading.Tasks;
 
 namespace Lost.SharedLib
 {
-    public class StatistiqueService : IStatistiqueService
+    public class StatistiqueGroupeService : IStatistiqueGroupeService
     {
-        public async Task<StatistiqueViewModel[]> GetAllAsync()
+        public async Task<StatistiqueGroupeViewModel[]> GetAllAsync()
         {
-            IList<Statistique> statistiqueList = await StatistiqueDal.GetListAsync();
-            StatistiqueViewModel[] result = new StatistiqueViewModel[statistiqueList.Count];
+            IList<StatistiqueGroupe> statistiqueList = await StatistiqueGroupeDal.GetListAsync();
+            StatistiqueGroupeViewModel[] result = new StatistiqueGroupeViewModel[statistiqueList.Count];
 
             int i = 0;
             foreach (var statistique in statistiqueList)
             {
-                StatistiqueViewModel statistiqueViewModel = new StatistiqueViewModel();
+                StatistiqueGroupeViewModel statistiqueViewModel = new StatistiqueGroupeViewModel();
                 statistiqueViewModel.Benefice = statistique.Benefice;
                 statistiqueViewModel.Billet = statistique.Billet;
                 statistiqueViewModel.Nom = statistique.Nom;

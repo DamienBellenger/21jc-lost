@@ -2,7 +2,7 @@
 
 namespace Lost.SharedLib
 {
-    public class StatistiqueViewModel : BaseViewModel
+    public class StatistiquePersonneViewModel : BaseViewModel
     {
         public string Nom { get; set; }
         public int Numero { get; set; }
@@ -11,7 +11,7 @@ namespace Lost.SharedLib
         public double Voiture { get; set; }
         public double Benefice { get; set; }
 
-        public StatistiqueViewModel()
+        public StatistiquePersonneViewModel()
         {
             
         }

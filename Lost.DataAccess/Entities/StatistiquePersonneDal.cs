@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace Lost.DataAccess.Entities
 {
-    public class StatistiqueDal
+    public class StatistiquePersonneDal
     {
-        public static IList<Statistique> GetList()
+        public static IList<StatistiquePersonne> GetList()
         {
             using (LostDbContext dbContext = CommonDal.CreateDbContext())
             {
-                return dbContext.Statistique.AsNoTracking().ToList();
+                return dbContext.StatistiquePersonne.AsNoTracking().ToList();
             }
         }
 
-        public static async Task<IList<Statistique>> GetListAsync()
+        public static async Task<IList<StatistiquePersonne>> GetListAsync()
         {
             using (LostDbContext dbContext = CommonDal.CreateDbContext())
             {
-                return await dbContext.Statistique.AsNoTracking().ToListAsync();
+                return await dbContext.StatistiquePersonne.AsNoTracking().ToListAsync();
             }
         }
     }

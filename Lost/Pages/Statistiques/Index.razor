@@ -1,12 +1,13 @@
 ﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(ConstantsUrl.StatistiqueIndex)]
 @attribute [Microsoft.AspNetCore.Components.RouteAttribute("/")]
 
-@inject IStatistiqueService StatistiqueService
+@inject IStatistiqueGroupeService StatistiqueGroupeService
+@inject IStatistiquePersonneService StatistiquePersonneService
 @inject ISemaineService SemaineService
 @inject NavigationManager NavManager
 @inject NotifierTitleService NotifierTitle
 
-@if (statistiqueViewModel == null)
+@if (statistiquePersonneViewModel == null)
 {
     <div class="spinner"></div>
 }
@@ -23,25 +24,25 @@ else
     </RadzenDropDown>
     <div class="mat-layout-grid">
         <div class="mat-layout-grid-inner">
-            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
 
-                <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="StatistiqueViewModel" Items="statistiqueViewModel" PageSize="15">
-                    <BlazorTable.Column TableItem="StatistiqueViewModel" Title="Groupe" Field="@(x => x.Nom)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiqueViewModel" Title="Billet" Field="@(x => x.Billet)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiqueViewModel" Title="Sac" Field="@(x => x.Sac)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiqueViewModel" Title="Voiture" Field="@(x => x.Voiture)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiqueViewModel" Title="Benefice" Field="@(x => x.Benefice)" Sortable="true" Filterable="true" Width="20%" />
+                <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="StatistiqueGroupeViewModel" Items="statistiqueGroupeViewModel" PageSize="15">
+                    <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Groupe" Field="@(x => x.Nom)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Billet" Field="@(x => x.Billet)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Sac" Field="@(x => x.Sac)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Voiture" Field="@(x => x.Voiture)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Benefice" Field="@(x => x.Benefice)" Sortable="true" Filterable="true" Width="20%" />
                     <BlazorTable.Pager ShowPageNumber="true" ShowTotalCount="true" />
                 </BlazorTable.Table>
             </div>
-            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
 
-                <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="StatistiqueViewModel" Items="statistiqueViewModel" PageSize="15">
-                    <BlazorTable.Column TableItem="StatistiqueViewModel" Title="Groupe" Field="@(x => x.Nom)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiqueViewModel" Title="Billet" Field="@(x => x.Billet)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiqueViewModel" Title="Sac" Field="@(x => x.Sac)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiqueViewModel" Title="Voiture" Field="@(x => x.Voiture)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiqueViewModel" Title="Benefice" Field="@(x => x.Benefice)" Sortable="true" Filterable="true" Width="20%" />
+                <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="StatistiquePersonneViewModel" Items="statistiquePersonneViewModel" PageSize="15">
+                    <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Personne" Field="@(x => x.Nom)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Billet" Field="@(x => x.Billet)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Sac" Field="@(x => x.Sac)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Voiture" Field="@(x => x.Voiture)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Benefice" Field="@(x => x.Benefice)" Sortable="true" Filterable="true" Width="20%" />
                     <BlazorTable.Pager ShowPageNumber="true" ShowTotalCount="true" />
                 </BlazorTable.Table>
             </div>
@@ -50,21 +51,26 @@ else
 }
 
 @code {
-    private StatistiqueViewModel[] statistiqueViewModel;
+    private StatistiqueGroupeViewModel[] statistiqueGroupeViewModel;
+    private StatistiquePersonneViewModel[] statistiquePersonneViewModel;
 
     private SemaineViewModel[] semaineViewModelList;
     private SemaineViewModel semaineViewModelSelected;
 
-    private StatistiqueViewModel[] allStatistiqueViewModel;
+    private StatistiqueGroupeViewModel[] allStatistiqueGroupeViewModel;
+    private StatistiquePersonneViewModel[] allStatistiquePersonneViewModel;
 
 
     protected override async Task OnInitializedAsync()
     {
         await NotifierTitle.Update(Lost.SharedLib.Constants.TitleStatistiqueIndex);
 
-        allStatistiqueViewModel = await StatistiqueService.GetAllAsync();
-        allStatistiqueViewModel = allStatistiqueViewModel.OrderByDescending(v => v.Benefice).ToArray();
-        statistiqueViewModel = allStatistiqueViewModel;
+        allStatistiqueGroupeViewModel = await StatistiqueGroupeService.GetAllAsync();
+        allStatistiquePersonneViewModel = await StatistiquePersonneService.GetAllAsync();
+        allStatistiqueGroupeViewModel = allStatistiqueGroupeViewModel.OrderByDescending(v => v.Benefice).ToArray();
+        allStatistiquePersonneViewModel = allStatistiquePersonneViewModel.OrderByDescending(v => v.Benefice).ToArray();
+        statistiqueGroupeViewModel = allStatistiqueGroupeViewModel;
+        statistiquePersonneViewModel = allStatistiquePersonneViewModel;
         semaineViewModelList = await SemaineService.GetAllAsync();
         semaineViewModelSelected = semaineViewModelList.Last();
         semaineViewModelList = semaineViewModelList.OrderByDescending(s => s.Num).ToArray();
@@ -75,11 +81,13 @@ else
     {
         if (semaineViewModelSelected == null)
         {
-            statistiqueViewModel = allStatistiqueViewModel;
+            statistiqueGroupeViewModel = allStatistiqueGroupeViewModel;
+            statistiquePersonneViewModel = allStatistiquePersonneViewModel;
         }
         else
         {
-            statistiqueViewModel = allStatistiqueViewModel.Where(t => t.Numero == semaineViewModelSelected.Num).ToArray();
+            statistiqueGroupeViewModel = allStatistiqueGroupeViewModel.Where(t => t.Numero == semaineViewModelSelected.Num).ToArray();
+            statistiquePersonneViewModel = allStatistiquePersonneViewModel.Where(t => t.Numero == semaineViewModelSelected.Num).ToArray();
         }
     }
     }
