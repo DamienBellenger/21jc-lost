@@ -26,7 +26,7 @@ else
         <div class="mat-layout-grid-inner">
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
 
-                <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="StatistiqueGroupeViewModel" Items="statistiqueGroupeViewModel" PageSize="15">
+                <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="StatistiqueGroupeViewModel" Items="statistiqueGroupeViewModel" PageSize="12">
                     <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Groupe" Field="@(x => x.Nom)" Sortable="true" Filterable="true" Width="20%" />
                     <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Billet" Field="@(x => x.Billet)" Sortable="true" Filterable="true" Width="20%" />
                     <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Sac" Field="@(x => x.Sac)" Sortable="true" Filterable="true" Width="20%" />
@@ -37,7 +37,7 @@ else
             </div>
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
 
-                <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="StatistiquePersonneViewModel" Items="statistiquePersonneViewModel" PageSize="15">
+                <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="StatistiquePersonneViewModel" Items="statistiquePersonneViewModel" PageSize="12">
                     <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Personne" Field="@(x => x.Nom)" Sortable="true" Filterable="true" Width="20%" />
                     <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Billet" Field="@(x => x.Billet)" Sortable="true" Filterable="true" Width="20%" />
                     <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Sac" Field="@(x => x.Sac)" Sortable="true" Filterable="true" Width="20%" />

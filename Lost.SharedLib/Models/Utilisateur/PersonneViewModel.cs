@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Lost.DataAccess.Entities;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Lost.SharedLib
 {
@@ -10,6 +12,7 @@ namespace Lost.SharedLib
         [Required(ErrorMessage = Constants.ErrorRequiredPrenom)]
         public string Prenom { get; set; }
 
+        [CustomValidation(typeof(PersonneViewModel), nameof(ValidateTelPersonne))]
         public string Tel { get; set; }
 
         public bool IsPetiteMain { get; set; }
@@ -27,6 +30,24 @@ namespace Lost.SharedLib
         public override string ToString()
         {
             return Nom + " " + Prenom;
+        }
+
+        public static ValidationResult ValidateTelPersonne(object article, ValidationContext vc)
+        {
+            if (vc.ObjectInstance is PersonneViewModel personneViewModel)
+            {
+                if(personneViewModel.Tel != "")
+                {
+                    if(PersonneDal.IsTelUsed(personneViewModel.Id, personneViewModel.Tel))
+                    {
+                        return new ValidationResult(Constants.ErrorTelPersonneAlreadyExist, new[] { vc.MemberName });
+                    }
+                }
+
+                return ValidationResult.Success;
+                
+            }
+            return ValidationResult.Success;
         }
     }
 }

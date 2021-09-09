@@ -11,6 +11,7 @@
         public const string ErrorRequiredValeurBillet = "La valeur d'un billet est requise";
         public const string ErrorRequiredDate = "La date est requise";
         public const string ErrorRequiredGroupePersonne = "Un groupe ou une personne est requis";
+        public const string ErrorTelPersonneAlreadyExist = "Ce numéro de téléphone est déjà attribué";
 
         public const string TitleGroupeIndex = "Liste des groupes";
         public const string TitleGroupeCreateOrEdit = "Edition d'un groupe";

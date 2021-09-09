@@ -61,7 +61,11 @@ namespace Lost.SharedLib
             if (tauxBlanchiment != null)
             {
                 personneViewModel.TauxBlanchimentViewModel = EntityToViewModel.FillViewModel<TauxBlanchiment, TauxBlanchimentViewModel>(tauxBlanchiment);
+            }
 
+            if (personne.Groupe != null)
+            {
+                personneViewModel.GroupeViewModel = EntityToViewModel.FillViewModel<Groupe, GroupeViewModel>(personne.Groupe);
             }
 
             return personneViewModel;

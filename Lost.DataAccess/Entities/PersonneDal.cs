@@ -2,12 +2,29 @@
 using Lost.Model;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lost.DataAccess.Entities
 {
     public class PersonneDal : LostContextDal<Personne>
     {
+        public static bool IsTelUsed(long id, string tel)
+        {
+            using (LostDbContext dbContext = CommonDal.CreateDbContext())
+            {
+                return (dbContext.Personne.AsNoTracking().FirstOrDefault(i => i.Id != id && i.Tel == tel)) != null;
+            }
+        }
+
+        public new static async Task<Personne> GetAsync(long id)
+        {
+            using (LostDbContext dbContext = CommonDal.CreateDbContext())
+            {
+                return await dbContext.Personne.Include(p => p.Groupe).AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+            }
+        }
+
         public static async Task<bool> CanBeDeleted(long idGroupe)
         {
             using (LostDbContext dbContext = CommonDal.CreateDbContext())

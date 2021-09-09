@@ -28,7 +28,7 @@ else
 
     <MatButton Icon="add" Raised="true" Class="mb-3 float-right" @onclick="RedirectToCreate">Achat / Vente</MatButton>
 
-    <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="AchatVenteViewModel" Items="achatVenteViewModel" PageSize="15">
+    <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="AchatVenteViewModel" Items="achatVenteViewModel" PageSize="12">
         <BlazorTable.Column TableItem="AchatVenteViewModel" Title="Date" Field="@(x => x.Date)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="AchatVenteViewModel" Title="De" Field="@(x => x.From)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="AchatVenteViewModel" Title="Description" Field="@(x => x.Description)" Sortable="true" Filterable="true" Width="20%" />
