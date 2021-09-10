@@ -81,8 +81,37 @@ else
     {
         if (semaineViewModelSelected == null)
         {
-            statistiqueGroupeViewModel = allStatistiqueGroupeViewModel;
-            statistiquePersonneViewModel = allStatistiquePersonneViewModel;
+            List<StatistiqueGroupeViewModel> listGroupe = new List<StatistiqueGroupeViewModel>();
+            foreach (var stat in allStatistiqueGroupeViewModel.GroupBy(s => s.Nom))
+            {
+                StatistiqueGroupeViewModel statPerVm = new StatistiqueGroupeViewModel();
+                statPerVm.Nom = stat.Key;
+                foreach (var s in stat)
+                {
+                    statPerVm.Benefice += s.Benefice;
+                    statPerVm.Billet += s.Billet;
+                    statPerVm.Voiture += s.Voiture;
+                    statPerVm.Sac += s.Sac;
+                }
+                listGroupe.Add(statPerVm);
+            }
+            statistiqueGroupeViewModel = listGroupe.ToArray();
+
+            List<StatistiquePersonneViewModel> listPersonne = new List<StatistiquePersonneViewModel>();
+            foreach(var stat in allStatistiquePersonneViewModel.GroupBy(s => s.Nom))
+            {
+                StatistiquePersonneViewModel statPerVm = new StatistiquePersonneViewModel();
+                statPerVm.Nom = stat.Key;
+                foreach(var s in stat)
+                {
+                    statPerVm.Benefice += s.Benefice;
+                    statPerVm.Billet += s.Billet;
+                    statPerVm.Voiture += s.Voiture;
+                    statPerVm.Sac += s.Sac;
+                }
+                listPersonne.Add(statPerVm);
+            }
+            statistiquePersonneViewModel = listPersonne.ToArray();
         }
         else
         {
