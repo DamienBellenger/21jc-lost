@@ -33,6 +33,13 @@ namespace Lost.SharedLib
 
             }
         }
+        public string ArgentSaleString
+        {
+            get
+            {
+                return ArgentSale.ToString("#,0");
+            }
+        }
 
         public double Paye
         {
@@ -56,6 +63,13 @@ namespace Lost.SharedLib
 
             }
         }
+        public string PayeString
+        {
+            get
+            {
+                return Paye.ToString("#,0");
+            }
+        }
 
         public double Benefice
         {
@@ -66,6 +80,13 @@ namespace Lost.SharedLib
             set
             {
 
+            }
+        }
+        public string BeneficeString
+        {
+            get
+            {
+                return Benefice.ToString("#,0");
             }
         }
 

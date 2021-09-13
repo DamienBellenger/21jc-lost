@@ -18,7 +18,7 @@ else
                     AllowClear="true"
                     AllowFiltering="true"
                     FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                    TextProperty="DisplayReferenceDesignation"
+                    TextProperty="Libelle"
                     Placeholder="Semaine"
                     Change="SemaineChange">
     </RadzenDropDown>
@@ -28,10 +28,10 @@ else
 
                 <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="StatistiqueGroupeViewModel" Items="statistiqueGroupeViewModel" PageSize="12">
                     <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Groupe" Field="@(x => x.Nom)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Billet" Field="@(x => x.Billet)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Sac" Field="@(x => x.Sac)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Voiture" Field="@(x => x.Voiture)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Benefice" Field="@(x => x.Benefice)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Billet" Field="@(x => x.BilletString)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Sac" Field="@(x => x.SacString)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Voiture" Field="@(x => x.VoitureString)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiqueGroupeViewModel" Title="Benefice" Field="@(x => x.BeneficeString)" Sortable="true" Filterable="true" Width="20%" />
                     <BlazorTable.Pager ShowPageNumber="true" ShowTotalCount="true" />
                 </BlazorTable.Table>
             </div>
@@ -39,10 +39,10 @@ else
 
                 <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="StatistiquePersonneViewModel" Items="statistiquePersonneViewModel" PageSize="12">
                     <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Personne" Field="@(x => x.Nom)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Billet" Field="@(x => x.Billet)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Sac" Field="@(x => x.Sac)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Voiture" Field="@(x => x.Voiture)" Sortable="true" Filterable="true" Width="20%" />
-                    <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Benefice" Field="@(x => x.Benefice)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Billet" Field="@(x => x.BilletString)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Sac" Field="@(x => x.SacString)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Voiture" Field="@(x => x.VoitureString)" Sortable="true" Filterable="true" Width="20%" />
+                    <BlazorTable.Column TableItem="StatistiquePersonneViewModel" Title="Benefice" Field="@(x => x.BeneficeString)" Sortable="true" Filterable="true" Width="20%" />
                     <BlazorTable.Pager ShowPageNumber="true" ShowTotalCount="true" />
                 </BlazorTable.Table>
             </div>

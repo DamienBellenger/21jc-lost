@@ -16,6 +16,7 @@ namespace Lost
         {
             CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
             CultureInfo.CurrentUICulture = new CultureInfo("fr-FR");
+
             CreateHostBuilder(args).Build().Run();
         }
 

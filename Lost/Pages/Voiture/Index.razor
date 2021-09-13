@@ -21,7 +21,7 @@ else
                     AllowClear="true"
                     AllowFiltering="true"
                     FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                    TextProperty="DisplayReferenceDesignation"
+                    TextProperty="Libelle"
                     Placeholder="Semaine"
                     Change="SemaineChange">
     </RadzenDropDown>
@@ -31,9 +31,9 @@ else
     <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="VoitureViewModel" Items="voitureViewModel" PageSize="12">
         <BlazorTable.Column TableItem="VoitureViewModel" Title="Date" Field="@(x => x.Date)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="VoitureViewModel" Title="De" Field="@(x => x.From)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="VoitureViewModel" Title="Argent sale" Field="@(x => x.ArgentSale)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="VoitureViewModel" Title="Payé" Field="@(x => x.Paye)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="VoitureViewModel" Title="Bénéfice" Field="@(x => x.Benefice)" Sortable="true" Filterable="true" Width="20%" />
+        <BlazorTable.Column TableItem="VoitureViewModel" Title="Argent sale" Field="@(x => x.ArgentSaleString)" Sortable="true" Filterable="true" Width="20%" />
+        <BlazorTable.Column TableItem="VoitureViewModel" Title="Payé" Field="@(x => x.PayeString)" Sortable="true" Filterable="true" Width="20%" />
+        <BlazorTable.Column TableItem="VoitureViewModel" Title="Bénéfice" Field="@(x => x.BeneficeString)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="VoitureViewModel" Title="Actions" Width="10%">
             <Template Context="tableContext">
                 <MatIconButton Class="matIconButton p-0" Style="width: 24px;height: 24px;" Icon="create" @onclick="@(() => RedirectToEdit(tableContext.Id))"></MatIconButton>
