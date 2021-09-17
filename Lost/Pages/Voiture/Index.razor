@@ -19,15 +19,13 @@ else
         <BlazorTable.Column TableItem="VoitureViewModel" Title="Demandeur" Field="@(x => x.PersonneViewModel)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="VoitureViewModel" Title="Voiture" Field="@(x => x.TypeVoiture)" Sortable="true" Filterable="true" Width="20%">
             <EditTemplate>
-                <RadzenDropDown Data="voitureList"
+                <RadzenDropDown Data="voitureNameList"
                                 @bind-Value=@context.TypeVoiture
                                 TValue="String"
                                 AllowClear="true"
                                 AllowFiltering="true"
                                 Style="width:100%"
-                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                ValueProperty="name"
-                                TextProperty="name">
+                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
                 </RadzenDropDown>
             </EditTemplate>
         </BlazorTable.Column>
@@ -37,6 +35,7 @@ else
 
 @code {
     private VoitureGta[] voitureList;
+    private string[] voitureNameList;
     private VoitureViewModel[] voitureViewModel;
     private ITable<VoitureViewModel> Table;
 
@@ -57,7 +56,8 @@ else
             vvm.TypeVoitureEvent += Change;
         }
         voitureList = await Http.GetJsonAsync<VoitureGta[]>("vehicles.json");
-        voitureList = voitureList.Where(v => v.type == "Cars" || v.type == "Trucks" || v.type == "Bikes").ToArray();
+        voitureList = voitureList.Where(v => v.Type == "Cars" || v.Type == "Trucks" || v.Type == "Bikes").ToArray();
+        voitureNameList = voitureList.Select(v => v.Name).Distinct().ToArray();
         StartTimer();
     }
 
@@ -77,18 +77,18 @@ else
 
     private class VoitureGta
     {
-        public string name { get; set; }
-        public string type { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
         public override string ToString()
         {
-            return name;
+            return Name;
         }
 
         public override bool Equals(object obj)
         {
             if(obj is VoitureGta voitureGta)
             {
-                return voitureGta.name != name;
+                return voitureGta.Name != Name;
             }
             return false;
         }
