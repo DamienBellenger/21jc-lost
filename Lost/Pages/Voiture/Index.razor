@@ -1,8 +1,9 @@
 ﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(ConstantsUrl.VoitureIndex)]
 @inject IVoitureService VoitureService
-@inject ISemaineService SemaineService
 @inject NavigationManager NavManager
 @inject NotifierTitleService NotifierTitle
+@inject HttpClient Http
+@using BlazorTable
 
 @if (voitureViewModel == null)
 {
@@ -10,48 +11,33 @@
 }
 else
 {
-    <Confirm @ref="deleteConfirmation"
-             ConfirmationChanged="ConfirmDelete_Click"
-             ConfirmationMessage=@($"Êtes-vous sûr de vouloir supprimer ce blanchiment ?")
-             UnableMessage=@($"")>
-    </Confirm>
+    <button class="btn btn-sm btn-danger" title="Toggle Edit Mode" @onclick="@((x) => ToggleEdit())">Toggle Edit Mode</button>
 
-    <RadzenDropDown Data="semaineViewModelList"
-                    @bind-Value=@semaineViewModelSelected
-                    AllowClear="true"
-                    AllowFiltering="true"
-                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                    TextProperty="Libelle"
-                    Placeholder="Semaine"
-                    Change="SemaineChange">
-    </RadzenDropDown>
-
-    <MatButton Icon="add" Raised="true" Class="mb-3 float-right" @onclick="RedirectToCreate">Blanchiment</MatButton>
-
-    <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="VoitureViewModel" Items="voitureViewModel" PageSize="12">
-        <BlazorTable.Column TableItem="VoitureViewModel" Title="Date" Field="@(x => x.Date)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="VoitureViewModel" Title="De" Field="@(x => x.From)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="VoitureViewModel" Title="Argent sale" Field="@(x => x.ArgentSaleString)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="VoitureViewModel" Title="Payé" Field="@(x => x.PayeString)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="VoitureViewModel" Title="Bénéfice" Field="@(x => x.BeneficeString)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="VoitureViewModel" Title="Actions" Width="10%">
-            <Template Context="tableContext">
-                <MatIconButton Class="matIconButton p-0" Style="width: 24px;height: 24px;" Icon="create" @onclick="@(() => RedirectToEdit(tableContext.Id))"></MatIconButton>
-                <MatIconButton Class="matIconButton p-0" Style="width: 24px;height: 24px;" Icon="delete" @onclick="@(() => RedirectToDelete(tableContext))"></MatIconButton>
-            </Template>
+    <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" @ref="Table" TableItem="VoitureViewModel" Items="voitureViewModel" PageSize="12">
+        <BlazorTable.Column TableItem="VoitureViewModel" Title="Demandeur" Field="@(x => x.PersonneViewModel)" Sortable="true" Filterable="true" Width="20%" />
+        <BlazorTable.Column TableItem="VoitureViewModel" Title="Voiture" Field="@(x => x.TypeVoiture)" Sortable="true" Filterable="true" Width="20%">
+            <EditTemplate>
+                <RadzenDropDown Data="voitureList"
+                                Value="@context.TypeVoiture"
+                                TValue="String"
+                                AllowClear="true"
+                                AllowFiltering="true"
+                                Style="width:100%"
+                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                ValueProperty="name"
+                                TextProperty="name"
+                                ValueChanged="@((x) => Change(x, context))">
+                </RadzenDropDown>
+            </EditTemplate>
         </BlazorTable.Column>
         <BlazorTable.Pager ShowPageNumber="true" ShowTotalCount="true" />
     </BlazorTable.Table>
 }
 
 @code {
+    private VoitureGta[] voitureList;
     private VoitureViewModel[] voitureViewModel;
-    private VoitureViewModel voitureViewModelDelete;
-
-    private SemaineViewModel[] semaineViewModelList;
-    private SemaineViewModel semaineViewModelSelected;
-
-    private VoitureViewModel[] allVoitureViewModel;
+    private ITable<VoitureViewModel> Table;
 
 
     protected ConfirmBase deleteConfirmation { get; set; }
@@ -60,58 +46,64 @@ else
     {
         await NotifierTitle.Update(Lost.SharedLib.Constants.TitleTransactionIndex);
 
-        voitureViewModelDelete = new VoitureViewModel();
-        allVoitureViewModel = await VoitureService.GetAllAsync();
-        allVoitureViewModel = allVoitureViewModel.OrderByDescending(v => v.Date).ToArray();
-        voitureViewModel = allVoitureViewModel;
-        semaineViewModelList = await SemaineService.GetAllAsync();
-        semaineViewModelSelected = semaineViewModelList.Last();
-        semaineViewModelList = semaineViewModelList.OrderByDescending(s => s.Num).ToArray();
-        SemaineChange();
+        voitureViewModel = await VoitureService.GetAllAsync();
+        voitureList = await Http.GetJsonAsync<VoitureGta[]>("vehicles.json");
+        StartTimer();
     }
 
-    protected void RedirectToCreate()
+    private void ToggleEdit()
     {
-        NavManager.NavigateTo(ConstantsUrl.VoitureCreateOrEdit);
+        Table.ToggleEditMode();
     }
 
-    protected void RedirectToEdit(long id)
+    private void Change(object value, VoitureViewModel model)
     {
-        NavManager.NavigateTo(ConstantsUrl.VoitureCreateOrEdit + "/" + id);
-    }
-
-    protected async Task RedirectToDelete(VoitureViewModel viewModel)
-    {
-        voitureViewModelDelete = viewModel;
-        bool canBeDeleted = await VoitureService.CanBeDeleted(viewModel.Id);
-        if (canBeDeleted)
+        if (value == null)
         {
-            deleteConfirmation.Show();
+            value = string.Empty;
         }
-        else
+        model.TypeVoiture = value.ToString();
+        Task.Run(async () => await VoitureService.AddOrUpdateAsync(model)).Wait();
+    }
+
+    private class VoitureGta
+    {
+        public string name { get; set; }
+        public string type { get; set; }
+        public override string ToString()
         {
-            deleteConfirmation.ShowUnableDelete();
+            return name;
         }
     }
 
-    protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+
+    private static System.Timers.Timer aTimer;
+
+    public void StartTimer()
     {
-        if (deleteConfirmed)
-        {
-            await VoitureService.DeleteAsync(voitureViewModelDelete.Id);
-            voitureViewModel = await VoitureService.GetAllAsync();
-        }
+        aTimer = new System.Timers.Timer(1000);
+        aTimer.Elapsed += CountDownTimer;
+        aTimer.Enabled = true;
     }
 
-    private void SemaineChange()
+    public async void CountDownTimer(Object source, System.Timers.ElapsedEventArgs e)
     {
-        if(semaineViewModelSelected == null)
+        var reloadVoitureViewModel = await VoitureService.GetAllAsync();
+        bool diff = false;
+
+        foreach(VoitureViewModel vvm in reloadVoitureViewModel)
         {
-            voitureViewModel = allVoitureViewModel;
+            var actuallVvm = voitureViewModel.First(v => v.Id == vvm.Id);
+            if(vvm.TypeVoiture != actuallVvm.TypeVoiture)
+            {
+                diff = true;
+            }
         }
-        else
+
+        if(diff)
         {
-            voitureViewModel = allVoitureViewModel.Where(t => t.SemaineViewModel.Id == semaineViewModelSelected.Id).ToArray();
+            voitureViewModel = reloadVoitureViewModel;
+            await InvokeAsync(StateHasChanged);
         }
     }
 }

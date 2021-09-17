@@ -6,7 +6,7 @@ namespace Lost.SharedLib
     {
         public Task<VoitureViewModel[]> GetAllAsync();
 
-        public Task<VoitureViewModel> GetAsync(long id);
+        //public Task<VoitureViewModel> GetAsync(long id);
 
         public Task AddOrUpdateAsync(VoitureViewModel voitureViewModel);
 
