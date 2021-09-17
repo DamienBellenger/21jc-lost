@@ -11,22 +11,23 @@
 }
 else
 {
-    <button class="btn btn-sm btn-danger" title="Toggle Edit Mode" @onclick="@((x) => ToggleEdit())">Toggle Edit Mode</button>
+<AuthorizeView Roles="Utilisateur, Administrateur">
+    <MatButton Icon="create" Raised="true" Class="mb-3 float-right" @onclick="((x) => ToggleEdit())">Editer</MatButton>
+</AuthorizeView>
 
     <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" @ref="Table" TableItem="VoitureViewModel" Items="voitureViewModel" PageSize="12">
         <BlazorTable.Column TableItem="VoitureViewModel" Title="Demandeur" Field="@(x => x.PersonneViewModel)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="VoitureViewModel" Title="Voiture" Field="@(x => x.TypeVoiture)" Sortable="true" Filterable="true" Width="20%">
             <EditTemplate>
                 <RadzenDropDown Data="voitureList"
-                                Value="@context.TypeVoiture"
+                                @bind-Value=@context.TypeVoiture
                                 TValue="String"
                                 AllowClear="true"
                                 AllowFiltering="true"
                                 Style="width:100%"
                                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                 ValueProperty="name"
-                                TextProperty="name"
-                                ValueChanged="@((x) => Change(x, context))">
+                                TextProperty="name">
                 </RadzenDropDown>
             </EditTemplate>
         </BlazorTable.Column>
@@ -40,6 +41,8 @@ else
     private ITable<VoitureViewModel> Table;
 
 
+
+
     protected ConfirmBase deleteConfirmation { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -47,7 +50,14 @@ else
         await NotifierTitle.Update(Lost.SharedLib.Constants.TitleTransactionIndex);
 
         voitureViewModel = await VoitureService.GetAllAsync();
+        voitureViewModel = voitureViewModel.OrderBy(v => string.IsNullOrWhiteSpace(v.TypeVoiture)).ThenBy(v => v.TypeVoiture).Distinct().ToArray();
+
+        foreach (var vvm in voitureViewModel)
+        {
+            vvm.TypeVoitureEvent += Change;
+        }
         voitureList = await Http.GetJsonAsync<VoitureGta[]>("vehicles.json");
+        voitureList = voitureList.Where(v => v.type == "Cars" || v.type == "Trucks" || v.type == "Bikes").ToArray();
         StartTimer();
     }
 
@@ -56,14 +66,13 @@ else
         Table.ToggleEditMode();
     }
 
-    private void Change(object value, VoitureViewModel model)
+    private void Change(object model, TypeVoitureEventArgs e)
     {
-        if (value == null)
+        if (model is VoitureViewModel vvm)
         {
-            value = string.Empty;
+            VoitureService.AddOrUpdateAsync(vvm);
         }
-        model.TypeVoiture = value.ToString();
-        Task.Run(async () => await VoitureService.AddOrUpdateAsync(model)).Wait();
+
     }
 
     private class VoitureGta
@@ -73,6 +82,15 @@ else
         public override string ToString()
         {
             return name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is VoitureGta voitureGta)
+            {
+                return voitureGta.name != name;
+            }
+            return false;
         }
     }
 
@@ -102,7 +120,15 @@ else
 
         if(diff)
         {
-            voitureViewModel = reloadVoitureViewModel;
+            foreach (var vvm in voitureViewModel)
+            {
+                vvm.TypeVoitureEvent -= Change;
+            }
+            voitureViewModel = reloadVoitureViewModel.OrderBy(v => string.IsNullOrWhiteSpace(v.TypeVoiture)).ThenBy(v => v.TypeVoiture).ToArray();
+            foreach (var vvm in voitureViewModel)
+            {
+                vvm.TypeVoitureEvent += Change;
+            }
             await InvokeAsync(StateHasChanged);
         }
     }
