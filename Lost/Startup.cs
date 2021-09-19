@@ -74,6 +74,9 @@ namespace Lost
             services.AddTransient<IVoitureService, VoitureService>();
             services.AddSingleton<VoitureService>();
 
+            services.AddTransient<IVoiturePersonneService, VoiturePersonneService>();
+            services.AddSingleton<VoiturePersonneService>();
+
             services.AddTransient<ISemaineService, SemaineService>();
             services.AddSingleton<SemaineService>();
 

@@ -1,18 +1,8 @@
 ﻿
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace Lost.Model
 {
-    public class Voiture : IdEntity
+    public class Voiture : Transaction
     {
-        [Column("type_voiture")]
-        public string TypeVoiture { get; set; }
 
-        [ForeignKey(nameof(DemandeurId))]
-        public Personne Demandeur { get; set; }
-
-        [ForeignKey(nameof(Personne))]
-        [Column("id_personne")]
-        public long DemandeurId { get; set; }
     }
 }

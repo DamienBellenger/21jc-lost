@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Lost.DataAccess.Entities
 {
-    public class VoitureDal : LostContextDal<Voiture>
+    public class VoiturePersonneDal : LostContextDal<VoiturePersonne>
     {
-        public static async Task<List<Voiture>> GetListWithPersonneAsync()
+        public static async Task<List<VoiturePersonne>> GetListWithPersonneAsync()
         {
             using (LostDbContext dbContext = CommonDal.CreateDbContext())
             {
-                return await dbContext.Voiture.AsNoTracking().Include(u => u.Demandeur).ToListAsync();
+                return await dbContext.VoiturePersonne.AsNoTracking().Include(u => u.Demandeur).ToListAsync();
             }
         }
     }

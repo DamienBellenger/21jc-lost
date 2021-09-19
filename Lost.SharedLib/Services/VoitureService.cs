@@ -11,47 +11,118 @@ namespace Lost.SharedLib
     {
         public async Task<VoitureViewModel[]> GetAllAsync()
         {
-            IList<Voiture> voitureList = await VoitureDal.GetListWithPersonneAsync();
+            IList<Voiture> voitureList = await TransactionDal<Voiture>.GetListWithDetailsAsync();
             VoitureViewModel[] result = new VoitureViewModel[voitureList.Count];
 
             int i = 0;
             foreach (var voiture in voitureList.OrderBy(e => e.Id))
             {
-                VoitureViewModel voitureViewModel = EntityToViewModel.FillViewModel<Voiture, VoitureViewModel>(voiture);
-                voitureViewModel.PersonneViewModel = EntityToViewModel.FillViewModel<Personne, PersonneViewModel>(voiture.Demandeur);
+                VoitureViewModel transactionViewModel = EntityToViewModel.FillViewModel<Voiture, VoitureViewModel>(voiture);
+                if (voiture.TauxBlanchiment.Personne != null)
+                {
+                    transactionViewModel.PersonneViewModel = EntityToViewModel.FillViewModel<Personne, PersonneViewModel>(voiture.TauxBlanchiment.Personne);
+                    transactionViewModel.PersonneViewModel.TauxBlanchimentViewModel = EntityToViewModel.FillViewModel<TauxBlanchiment, TauxBlanchimentViewModel>(voiture.TauxBlanchiment);
+                }
+                if (voiture.TauxBlanchiment.Groupe != null)
+                {
+                    transactionViewModel.GroupeViewModel = EntityToViewModel.FillViewModel<Groupe, GroupeViewModel>(voiture.TauxBlanchiment.Groupe);
+                    transactionViewModel.GroupeViewModel.TauxBlanchimentViewModel = EntityToViewModel.FillViewModel<TauxBlanchiment, TauxBlanchimentViewModel>(voiture.TauxBlanchiment);
+                }
+                if (voiture.Semaine != null)
+                {
+                    transactionViewModel.SemaineViewModel = EntityToViewModel.FillViewModel<Semaine, SemaineViewModel>(voiture.Semaine);
+                }
 
-                result[i] = voitureViewModel;
+                result[i] = transactionViewModel;
                 i++;
             }
             return await Task.FromResult(result);
         }
 
+        public async Task<VoitureViewModel> GetAsync(long id)
+        {
+            Voiture voiture = await TransactionDal<Voiture>.GetWithDetailsAsync(id);
+
+            VoitureViewModel voitureViewModel = EntityToViewModel.FillViewModel<Voiture, VoitureViewModel>(voiture);
+            TauxBlanchimentViewModel tauxBlanchimentViewModel = EntityToViewModel.FillViewModel<TauxBlanchiment, TauxBlanchimentViewModel>(voiture.TauxBlanchiment);
+            if (voiture.TauxBlanchiment.Groupe != null)
+            {
+                voitureViewModel.GroupeViewModel = EntityToViewModel.FillViewModel<Groupe, GroupeViewModel>(voiture.TauxBlanchiment.Groupe);
+                voitureViewModel.GroupeViewModel.TauxBlanchimentViewModel = tauxBlanchimentViewModel;
+            }
+            if (voiture.TauxBlanchiment.Personne != null)
+            {
+                voitureViewModel.PersonneViewModel = EntityToViewModel.FillViewModel<Personne, PersonneViewModel>(voiture.TauxBlanchiment.Personne);
+                voitureViewModel.PersonneViewModel.TauxBlanchimentViewModel = tauxBlanchimentViewModel;
+            }
+
+            return voitureViewModel;
+        }
+
         public async Task AddOrUpdateAsync(VoitureViewModel voitureViewModel)
         {
             Voiture voiture = ViewModelToEntity.FillEntity<VoitureViewModel, Voiture>(voitureViewModel);
-            voiture.DemandeurId = voitureViewModel.PersonneViewModel.Id;
-            if (voitureViewModel.Id == 0)
+
+            if (!voitureViewModel.IsPetiteMain)
             {
-                Semaine semaine = await SemaineDal.GetLastAsync();
-                //voiture.SemaineId = semaine.Id;
-                await VoitureDal.AddAsync(voiture);
+                GroupeViewModel groupeViewModel = voitureViewModel.GroupeViewModel;
+                TauxBlanchiment lastTauxBlanchiment = await TauxBlanchimentDal.GetLastTauxBlanchimentGroupeAsync(groupeViewModel.Id);
+                if (lastTauxBlanchiment.ValeurBillet != groupeViewModel.TauxBlanchimentViewModel.ValeurBillet ||
+                   lastTauxBlanchiment.ValeurSac != groupeViewModel.TauxBlanchimentViewModel.ValeurSac ||
+                   lastTauxBlanchiment.ValeurVoiture != groupeViewModel.TauxBlanchimentViewModel.ValeurVoiture)
+                {
+                    lastTauxBlanchiment = new TauxBlanchiment();
+                    lastTauxBlanchiment.ValeurBillet = groupeViewModel.TauxBlanchimentViewModel.ValeurBillet;
+                    lastTauxBlanchiment.ValeurSac = groupeViewModel.TauxBlanchimentViewModel.ValeurSac;
+                    lastTauxBlanchiment.ValeurVoiture = groupeViewModel.TauxBlanchimentViewModel.ValeurVoiture;
+                    lastTauxBlanchiment.GroupeId = groupeViewModel.Id;
+                    lastTauxBlanchiment.DateDebut = System.DateTime.Now;
+                    await TauxBlanchimentDal.AddAsync(lastTauxBlanchiment);
+                }
+                voiture.TauxBlanchimentId = lastTauxBlanchiment.Id;
             }
             else
             {
-                Voiture oldVoiture = await VoitureDal.GetAsync(voiture.Id);
-                //voiture.SemaineId = oldVoiture.SemaineId;
-                await VoitureDal.UpdateAsync(voiture);
+                PersonneViewModel personneViewModel = voitureViewModel.PersonneViewModel;
+                TauxBlanchiment lastTauxBlanchiment = await TauxBlanchimentDal.GetLastTauxBlanchimentPersonneAsync(personneViewModel.Id);
+                if (lastTauxBlanchiment == null ||
+                    (lastTauxBlanchiment.ValeurBillet != personneViewModel.TauxBlanchimentViewModel.ValeurBillet ||
+                   lastTauxBlanchiment.ValeurSac != personneViewModel.TauxBlanchimentViewModel.ValeurSac ||
+                   lastTauxBlanchiment.ValeurVoiture != personneViewModel.TauxBlanchimentViewModel.ValeurVoiture))
+                {
+                    lastTauxBlanchiment = new TauxBlanchiment();
+                    lastTauxBlanchiment.ValeurBillet = personneViewModel.TauxBlanchimentViewModel.ValeurBillet;
+                    lastTauxBlanchiment.ValeurSac = personneViewModel.TauxBlanchimentViewModel.ValeurSac;
+                    lastTauxBlanchiment.ValeurVoiture = personneViewModel.TauxBlanchimentViewModel.ValeurVoiture;
+                    lastTauxBlanchiment.PersonneId = personneViewModel.Id;
+                    lastTauxBlanchiment.DateDebut = System.DateTime.Now;
+                    await TauxBlanchimentDal.AddAsync(lastTauxBlanchiment);
+                }
+                voiture.TauxBlanchimentId = lastTauxBlanchiment.Id;
+            }
+
+            if (voitureViewModel.Id == 0)
+            {
+                Semaine semaine = await SemaineDal.GetLastAsync();
+                voiture.SemaineId = semaine.Id;
+                await TransactionDal<Voiture>.AddAsync(voiture);
+            }
+            else
+            {
+                Voiture oldVoiture = await TransactionDal<Voiture>.GetAsync(voiture.Id);
+                voiture.SemaineId = oldVoiture.SemaineId;
+                await TransactionDal<Voiture>.UpdateAsync(voiture);
             }
         }
 
         public async Task DeleteAsync(long id)
         {
-            await VoitureDal.DeleteAsync(id);
+            await TransactionDal<Voiture>.DeleteAsync(id);
         }
 
         public async Task<bool> CanBeDeleted(long id)
         {
-            return true;//await VoitureDal.CanBeDeleted(id);
+            return await TransactionDal<Voiture>.CanBeDeleted(id);
         }
     }
 }
