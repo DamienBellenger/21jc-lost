@@ -11,7 +11,7 @@ else
 {
     <Confirm @ref="deleteConfirmation"
              ConfirmationChanged="ConfirmDelete_Click"
-             ConfirmationMessage=@($"Êtes-vous sûr de vouloir supprimer \"{personneViewModelDelete.Nom} {personneViewModelDelete.Prenom} \" ?")
+             ConfirmationMessage=@($"Êtes-vous sûr de vouloir supprimer \"{personneViewModelDelete.Nom}\" ?")
              UnableMessage=@($"Impossible de supprimer \"{personneViewModelDelete.Nom}\" car il est attribué à une transaction.")>
     </Confirm>
 
@@ -21,8 +21,8 @@ else
 
     <BlazorTable.Table class="table table-dark" TableHeadClass="thead-dark" TableItem="PersonneViewModel" Items="personneViewModel" PageSize="12">
         <BlazorTable.Column TableItem="PersonneViewModel" Title="Nom" Field="@(x => x.Nom)" Sortable="true" Filterable="true" Width="20%" />
-        <BlazorTable.Column TableItem="PersonneViewModel" Title="Prénom" Field="@(x => x.Prenom)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="PersonneViewModel" Title="Tel" Field="@(x => x.Tel)" Sortable="true" Filterable="true" Width="20%" />
+        <BlazorTable.Column TableItem="PersonneViewModel" Title="Commentaire" Field="@(x => x.Commentaire)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="PersonneViewModel" Title="Groupe" Field="@(x => x.GroupeViewModel.Nom)" Sortable="true" Filterable="true" Width="20%" />
         <BlazorTable.Column TableItem="PersonneViewModel" Title="Actions" Width="10%">
             <Template Context="tableContext">
@@ -88,6 +88,6 @@ else
     protected void OnChange(string value, string name)
     {
         value = value.ToLower();
-        personneViewModel = allPersonneViewModel.Where(p => p.Nom.ToLower().Contains(value) || p.Prenom.ToLower().Contains(value) || p.Tel.ToLower().Contains(value) || (p.GroupeViewModel?.Nom != null && p.GroupeViewModel.Nom.ToLower().Contains(value))).ToArray();
+        personneViewModel = allPersonneViewModel.Where(p => p.Nom.ToLower().Contains(value) || p.Commentaire.ToLower().Contains(value) || p.Tel.ToLower().Contains(value) || (p.GroupeViewModel?.Nom != null && p.GroupeViewModel.Nom.ToLower().Contains(value))).ToArray();
     }
 }

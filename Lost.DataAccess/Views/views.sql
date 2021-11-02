@@ -20,7 +20,7 @@
     
 create view PersonneBilletSacVoitureSemaine as
 	select
-    p.nom||' '||p.prenom "nom",
+    p.nom "nom",
     s.numero,
     sum(coalesce(tbillet.qty, 0)) "billet",
     sum(coalesce(tsac.qty, 0)) "sac",
@@ -35,5 +35,5 @@ create view PersonneBilletSacVoitureSemaine as
     where tbillet.qty is not null
     or tsac.qty is not null
     or tvoiture.qty is not null
-    group by s.numero, p.nom, p.prenom
-    order by s.numero, p.nom, p.prenom;
+    group by s.numero, p.nom
+    order by s.numero, p.nom;

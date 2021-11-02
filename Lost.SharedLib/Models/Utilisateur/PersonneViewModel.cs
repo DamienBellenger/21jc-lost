@@ -9,8 +9,7 @@ namespace Lost.SharedLib
         [Required(ErrorMessage = Constants.ErrorRequiredNom)]
         public string Nom { get; set; }
 
-        [Required(ErrorMessage = Constants.ErrorRequiredPrenom)]
-        public string Prenom { get; set; }
+        public string Commentaire { get; set; }
 
         [CustomValidation(typeof(PersonneViewModel), nameof(ValidateTelPersonne))]
         public string Tel { get; set; }
@@ -29,7 +28,7 @@ namespace Lost.SharedLib
 
         public override string ToString()
         {
-            return Nom + " " + Prenom;
+            return Nom;
         }
 
         public static ValidationResult ValidateTelPersonne(object article, ValidationContext vc)

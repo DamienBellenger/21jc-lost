@@ -7,8 +7,8 @@ namespace Lost.Model
         [Column("nom")]
         public string Nom { get; set; }
 
-        [Column("prenom")]
-        public string Prenom { get; set; }
+        [Column("commentaire")]
+        public string Commentaire { get; set; }
 
         [Column("tel")]
         public string Tel { get; set; }
@@ -28,7 +28,7 @@ namespace Lost.Model
 
         public override string ToString()
         {
-            return Nom + " " + Prenom;
+            return Nom;
         }
     }
 }

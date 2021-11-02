@@ -16,7 +16,7 @@ namespace Lost.SharedLib
         {
             get
             {
-                return PersonneViewModel.Nom + " " + PersonneViewModel.Prenom;
+                return PersonneViewModel.Nom;
             }
             set
             {

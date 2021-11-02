@@ -120,7 +120,7 @@ else
             </RadzenDropDown>
         </EditTemplate>
     </BlazorTable.Column>
-    <AuthorizeView Roles="Administrateur" Context="isUserAdmin">
+    <AuthorizeView Roles="Utilisateur, Administrateur" Context="isUser">
         <Authorized>
             <BlazorTable.Column TableItem="VoiturePersonneViewModel" Title="Actions" Width="5%">
                 <Template Context="tableContext">
