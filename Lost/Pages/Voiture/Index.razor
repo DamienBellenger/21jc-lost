@@ -269,5 +269,9 @@ else
         ShowValid = false;
         voiturePersonneViewModelValid.TypeVoiture = null;
         await VoiturePersonneService.AddOrUpdateAsync(voiturePersonneViewModelValid);
+
+        voiturePersonneViewModel = await VoiturePersonneService.GetAllAsync();
+        voiturePersonneViewModel = voiturePersonneViewModel.OrderBy(v => string.IsNullOrWhiteSpace(v.TypeVoiture)).ThenBy(v => v.TypeVoiture).Distinct().ToArray();
+
     }
 }
