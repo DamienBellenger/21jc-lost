@@ -19,12 +19,12 @@
                         <ValidationMessage For="@(() => personneViewModel.Nom)" />
                     </p>
                     <p>
-                        <MatTextField Label="Prénom" @bind-Value="@personneViewModel.Prenom" FullWidth="true" />
-                        <ValidationMessage For="@(() => personneViewModel.Prenom)" />
-                    </p>
-                    <p>
                         <MatTextField Label="Telephone" @bind-Value="@personneViewModel.Tel" FullWidth="true" />
                         <ValidationMessage For="@(() => personneViewModel.Tel)" />
+                    </p>
+                    <p>
+                        <MatTextField Label="Commentaire" @bind-Value="@personneViewModel.Commentaire" FullWidth="true" />
+                        <ValidationMessage For="@(() => personneViewModel.Commentaire)" />
                     </p>
 
                     <p>

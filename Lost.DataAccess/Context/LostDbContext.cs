@@ -20,6 +20,7 @@ namespace Lost.DataAccess.Context
 
         public DbSet<AchatVente> AchatVente { get; set; }
         public DbSet<Billet> Billet { get; set; }
+        public DbSet<CompteClubTransaction> CompteClubTransaction { get; set; }
         public DbSet<Sac> Sac { get; set; }
         public DbSet<Voiture> Voiture { get; set; }
         public DbSet<VoiturePersonne> VoiturePersonne { get; set; }

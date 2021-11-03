@@ -24,5 +24,7 @@
         public const string TitleAchatVenteIndex = "Achat / Vente";
         public const string TitleAchatVenteCreateOrEdit = "Edition d'un  Achat / Vente";
         public const string TitleTransactionCreateOrEdit = "Edition d'un blanchiment";
+        public const string TitleCompteClubIndex = "Compte Club";
+        public const string TitleCompteClubFormulaire = "Compte Club - Formulaire";
     }
 }

@@ -120,7 +120,7 @@ else
             </RadzenDropDown>
         </EditTemplate>
     </BlazorTable.Column>
-    <AuthorizeView Roles="Administrateur" Context="isUserAdmin">
+    <AuthorizeView Roles="Utilisateur, Administrateur" Context="isUser">
         <Authorized>
             <BlazorTable.Column TableItem="VoiturePersonneViewModel" Title="Actions" Width="5%">
                 <Template Context="tableContext">
@@ -269,5 +269,9 @@ else
         ShowValid = false;
         voiturePersonneViewModelValid.TypeVoiture = null;
         await VoiturePersonneService.AddOrUpdateAsync(voiturePersonneViewModelValid);
+
+        voiturePersonneViewModel = await VoiturePersonneService.GetAllAsync();
+        voiturePersonneViewModel = voiturePersonneViewModel.OrderBy(v => string.IsNullOrWhiteSpace(v.TypeVoiture)).ThenBy(v => v.TypeVoiture).Distinct().ToArray();
+
     }
 }

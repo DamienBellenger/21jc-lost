@@ -96,7 +96,7 @@ namespace Lost.SharedLib
             {
                 if(PersonneViewModel != null)
                 {
-                    return PersonneViewModel.Nom + " " + PersonneViewModel.Prenom;
+                    return PersonneViewModel.Nom;
                 }
                 else if (GroupeViewModel != null)
                 {

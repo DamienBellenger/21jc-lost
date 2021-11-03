@@ -10,18 +10,35 @@
         <li class="nav-item px-3">
             <NavLink class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
                 <span class="material-icons">local_laundry_service</span><span style="margin-left: 8px;">Blanchiment</span>
-</NavLink>
+            </NavLink>
             @if (expandSubNav)
             {
+                <div style="margin-left: 20px;">
+                    <NavLink class="nav-link" href="billet/index">
+                        <span class="fontawe far fa-money-bill-alt" aria-hidden="true"></span> <span style="margin-left: 15px;">Billets</span>
+                    </NavLink>
+                    <NavLink class="nav-link" href="sac/index">
+                        <span class="material-icons">monetization_on</span> <span style="margin-left: 12px;">Sacs</span>
+                    </NavLink>
+                    <NavLink class="nav-link" href="voiture/index">
+                        <span class="fontawe fas fa-car" aria-hidden="true"></span> <span style="margin-left: 15px;">Voitures</span>
+                    </NavLink>
+                </div>
+            }
+        </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="()=>expandSubNavCompteClub = !expandSubNavCompteClub">
+                <span class="material-icons">folder</span><span style="margin-left: 8px;">Compte Club</span>
+            </NavLink>
+            @if (expandSubNavCompteClub)
+            {
         <div style="margin-left: 20px;">
-            <NavLink class="nav-link" href="billet/index">
-                <span class="fontawe far fa-money-bill-alt" aria-hidden="true"></span> <span style="margin-left: 15px;">Billets</span>
+            <NavLink class="nav-link" href="compteclub/index">
+                <span class="fontawe far fa-file"></span> <span style="margin-left: 12px;">Index</span>
             </NavLink>
-            <NavLink class="nav-link" href="sac/index">
-                <span class="material-icons">monetization_on</span> <span style="margin-left: 12px;">Sacs</span>
-            </NavLink>
-            <NavLink class="nav-link" href="voiture/index">
-                <span class="fontawe fas fa-car" aria-hidden="true"></span> <span style="margin-left: 15px;">Voitures</span>
+            <NavLink class="nav-link" href="compteclub/formulaire">
+                <span class="fontawe fab fa-wpforms" aria-hidden="true"></span> <span style="margin-left: 15px;">Formulaire</span>
             </NavLink>
         </div>
             }
@@ -57,6 +74,7 @@
 @code {
     private bool collapseNavMenu = true;
     private bool expandSubNav;
+    private bool expandSubNavCompteClub;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
