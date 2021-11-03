@@ -51,6 +51,22 @@ namespace Lost.SharedLib
             return await Task.FromResult(result);
         }
 
+        public async Task<PersonneViewModel[]> GetPersonneFromGroupe(long idGroupe)
+        {
+            IList<Personne> personneList = await PersonneDal.GetListFromGroupeAsync(idGroupe);
+            PersonneViewModel[] result = new PersonneViewModel[personneList.Count];
+
+            int i = 0;
+            foreach (var personne in personneList.OrderBy(e => e.Id))
+            {
+                PersonneViewModel personneViewModel = EntityToViewModel.FillViewModel<Personne, PersonneViewModel>(personne);
+
+                result[i] = personneViewModel;
+                i++;
+            }
+            return await Task.FromResult(result);
+        }
+
         public async Task<PersonneViewModel> GetAsync(long id)
         {
             Personne personne = await PersonneDal.GetAsync(id);

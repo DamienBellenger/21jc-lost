@@ -3,6 +3,7 @@
     public static class ConstantsUrl
     {
         public const string StatistiqueIndex = "/stats";
+        public const string MachineIndex = "/machine";
 
         public const string TransactionIndex = "/blanchiment/index";
         public const string TransactionCreateOrEdit = "/blanchiment/createOrEdit";
@@ -12,6 +13,9 @@
 
         public const string BilletIndex = "/billet/index";
         public const string BilletCreateOrEdit = "/billet/createOrEdit";
+
+        public const string CompteClubIndex = "/compteclub/index";
+        public const string CompteClubFormulaire = "/compteclub/formulaire";
 
         public const string SacIndex = "/sac/index";
         public const string SacCreateOrEdit = "/sac/createOrEdit";

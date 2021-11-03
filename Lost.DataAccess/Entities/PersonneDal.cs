@@ -54,5 +54,14 @@ namespace Lost.DataAccess.Entities
                 return personnes;
             }
         }
+
+        public static async Task<List<Personne>> GetListFromGroupeAsync(long idGroupe)
+        {
+            using (LostDbContext dbContext = CommonDal.CreateDbContext())
+            {
+                List<Personne> personnes = await dbContext.Personne.AsNoTracking().Where(p => p.GroupeId == idGroupe).ToListAsync();
+                return personnes;
+            }
+        }
     }
 }
