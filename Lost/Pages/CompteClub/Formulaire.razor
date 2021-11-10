@@ -1,7 +1,7 @@
 ﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(ConstantsUrl.CompteClubFormulaire)]
 
 @inject IPersonneService PersonneService
-@inject IGroupeService GroupeService
+@inject ICompteClubTransactionService CompteClubTransactionService
 @inject NavigationManager NavManager
 @inject IJSRuntime jsRuntime
 @inject NotifierTitleService NotifierTitle
@@ -83,7 +83,7 @@
 
     private void HandleValidSubmit()
     {
-        //Task.Run(async () => await BilletService.AddOrUpdateAsync(billetViewModel)).Wait();
+        Task.Run(async () => await CompteClubTransactionService.AddOrUpdateAsync(compteClubFormulaireViewModel)).Wait();
 
         NavManager.NavigateTo(ConstantsUrl.CompteClubIndex);
 

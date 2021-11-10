@@ -45,6 +45,7 @@ namespace Lost.SharedLib
         public async Task AddOrUpdateAsync(CompteClubFormulaireViewModel compteClubFormulaireViewModel)
         {
             CompteClubTransaction compteClubTransaction = ViewModelToEntity.FillEntity<CompteClubFormulaireViewModel, CompteClubTransaction>(compteClubFormulaireViewModel);
+            compteClubTransaction.Date = System.DateTime.Now;
 
             if (compteClubFormulaireViewModel.Id == 0)
             {

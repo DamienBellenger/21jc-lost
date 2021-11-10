@@ -1,16 +1,15 @@
 ﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(ConstantsUrl.CompteClubIndex)]
-@inject IBilletService BilletService
-@inject ISemaineService SemaineService
+@inject ICompteClubTransactionService CompteClubTransactionService
 @inject NavigationManager NavManager
 @inject NotifierTitleService NotifierTitle
 
-@if (billetViewModel == null)
+@if (compteClubFormulaireViewModel == null)
 {
     <div class="spinner"></div>
 }
 else
 {
-
+<h1>Compte Club : @compteClubFormulaireViewModel.Sum(c => c.Somme).ToString("#,0")</h1>
 }
 
 @code {
@@ -21,52 +20,6 @@ else
     {
         await NotifierTitle.Update(Lost.SharedLib.Constants.TitleTransactionIndex);
 
-        semaineViewModelList = await SemaineService.GetAllAsync();
-        SemaineChange();
-    }
-
-    protected void RedirectToCreate()
-    {
-        NavManager.NavigateTo(ConstantsUrl.BilletCreateOrEdit);
-    }
-
-    protected void RedirectToEdit(long id)
-    {
-        NavManager.NavigateTo(ConstantsUrl.BilletCreateOrEdit + "/" + id);
-    }
-
-    protected async Task RedirectToDelete(BilletViewModel viewModel)
-    {
-        billetViewModelDelete = viewModel;
-        bool canBeDeleted = await BilletService.CanBeDeleted(viewModel.Id);
-        if (canBeDeleted)
-        {
-            deleteConfirmation.Show();
-        }
-        else
-        {
-            deleteConfirmation.ShowUnableDelete();
-        }
-    }
-
-    protected async Task ConfirmDelete_Click(bool deleteConfirmed)
-    {
-        if (deleteConfirmed)
-        {
-            await BilletService.DeleteAsync(billetViewModelDelete.Id);
-            billetViewModel = await BilletService.GetAllAsync();
-        }
-    }
-
-    private void SemaineChange()
-    {
-        if(semaineViewModelSelected == null)
-        {
-            billetViewModel = allBilletViewModel;
-        }
-        else
-        {
-            billetViewModel = allBilletViewModel.Where(t => t.SemaineViewModel.Id == semaineViewModelSelected.Id).ToArray();
-        }
+        compteClubFormulaireViewModel = await CompteClubTransactionService.GetAllAsync();
     }
 }

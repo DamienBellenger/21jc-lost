@@ -86,6 +86,9 @@ namespace Lost
             services.AddTransient<IStatistiquePersonneService, StatistiquePersonneService>();
             services.AddSingleton<StatistiquePersonneService>();
 
+            services.AddTransient<ICompteClubTransactionService, CompteClubTransactionService>();
+            services.AddSingleton<CompteClubTransactionService>();
+
             services.AddScoped<DialogService>();
             services.AddScoped<NotificationService>();
             services.AddScoped<TooltipService>();
