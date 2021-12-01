@@ -46,6 +46,7 @@ namespace Lost.SharedLib
         {
             CompteClubTransaction compteClubTransaction = ViewModelToEntity.FillEntity<CompteClubFormulaireViewModel, CompteClubTransaction>(compteClubFormulaireViewModel);
             compteClubTransaction.Date = System.DateTime.Now;
+            compteClubTransaction.PersonneId = compteClubFormulaireViewModel.PersonneViewModel.Id;
 
             if (compteClubFormulaireViewModel.Id == 0)
             {

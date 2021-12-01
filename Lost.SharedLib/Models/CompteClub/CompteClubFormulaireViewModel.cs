@@ -9,7 +9,15 @@ namespace Lost.SharedLib
         public DateTime Date { get; set; }
 
         public double Somme { get; set; }
-        
+
+        public string SommeString
+        {
+            get
+            {
+                return Somme.ToString("#,0");
+            }
+        }
+
         public string Raison { get; set; }
 
         public CompteClubFormulaireViewModel()
